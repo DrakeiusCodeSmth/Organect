@@ -3,14 +3,14 @@ body {
     text-align: center;
 }
 
-.inventory {
-    display: flex;
-    gap: 10px;
-    margin: 20px auto;
-    padding: 10px;
+.game-area {
+    position: relative;
+    width: 80%;
+    height: 400px;
     border: 2px solid black;
-    width: 200px;
-    justify-content: center;
+    margin: 20px auto;
+    overflow: hidden;
+    background-color: #f0f0f0;
 }
 
 .atom {
@@ -24,12 +24,27 @@ body {
     align-items: center;
     font-size: 20px;
     cursor: grab;
+    position: absolute;
+    transition: transform 0.2s;
 }
 
-.workspace {
-    position: relative;
-    width: 80%;
-    height: 400px;
-    border: 2px solid black;
-    margin: 20px auto;
+.atom:active {
+    transform: scale(1.2);
+}
+
+#carbon {
+    left: 100px;
+    top: 100px;
+}
+
+#hydrogen {
+    left: 200px;
+    top: 200px;
+}
+
+.score-board {
+    font-size: 18px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
 }
