@@ -69,7 +69,7 @@ function startGame() {
 
             // Brief delay before redirecting to game.html
             setTimeout(() => {
-                window.location.href = 'game.html';
+                window.location.href = 'https://DrakeiusCodeSmth.github.io/Organect/game.html';
             }, 1000); // 1 second delay
         }
     }, 100);  // Update loading every 100ms
