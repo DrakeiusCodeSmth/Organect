@@ -1,24 +1,27 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bonding Game</title>
-    <link rel="stylesheet" href="game.css">
+    <title>Interactive Game</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Bonding Game: Create CH<sub>4</sub> (Methane)</h1>
+    <h1>Interactive Bonding Game</h1>
 
-    <!-- Inventory -->
-    <div class="inventory">
+    <!-- Game Area -->
+    <div class="game-area">
         <div class="atom" id="carbon" draggable="true" data-type="carbon">C</div>
         <div class="atom" id="hydrogen" draggable="true" data-type="hydrogen">H</div>
+        <div class="score-board">
+            Score: <span id="score">0</span>
+        </div>
     </div>
 
-    <!-- Workspace -->
-    <div class="workspace" id="workspace"></div>
+    <!-- Sound -->
+    <audio id="dropSound" src="sounds/drop.mp3"></audio>
+    <audio id="bondSound" src="sounds/bond.mp3"></audio>
 
-    <script src="game.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
