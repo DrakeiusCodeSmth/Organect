@@ -59,7 +59,6 @@ function startGame() {
     // Add a loading bar
     contentArea.innerHTML = '<p>Loading...</p><div id="loading-bar" style="width: 100%; background-color: #ddd; height: 20px;"><div id="progress" style="height: 100%; width: 0%; background-color: green;"></div></div>';
     
-    // Simulate loading progress
     let progress = 0;
     const loadingInterval = setInterval(() => {
         progress += 5;
@@ -67,13 +66,13 @@ function startGame() {
         
         if (progress >= 100) {
             clearInterval(loadingInterval);
-            // After loading completes, show the game canvas
-            contentArea.innerHTML = '<canvas id="gameCanvas" width="800" height="600"></canvas>';
-            const canvas = document.getElementById('gameCanvas');
-            const ctx = canvas.getContext('2d');
-            // Initialize game logic here...
+
+            // Brief delay before redirecting to game.html
+            setTimeout(() => {
+                window.location.href = 'Game/game.html';
+            }, 1000); // 1 second delay
         }
-    }, 100);  // Update the loading bar every 100ms
+    }, 100);  // Update loading every 100ms
 }
 
 // DEVELOPER BAR
