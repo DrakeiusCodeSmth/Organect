@@ -69,7 +69,7 @@ function startGame() {
 
             // Brief delay before redirecting to game.html
             setTimeout(() => {
-                window.location.href = 'Game/game.html';
+                window.location.href = 'game.html';
             }, 1000); // 1 second delay
         }
     }, 100);  // Update loading every 100ms
