@@ -32,11 +32,12 @@ document.getElementById('play-box').addEventListener('drop', function(e) {
     // Clone the image of the atom (not the whole div)
     const newAtom = atom.querySelector('img').cloneNode(true);
     newAtom.style.position = 'absolute';
-    newAtom.style.left = `${e.offsetX - 25}px`;
+    // Make sure the new atom is positioned correctly inside the play box
+    newAtom.style.left = `${e.offsetX - 25}px`; 
     newAtom.style.top = `${e.offsetY - 25}px`;
     e.target.appendChild(newAtom);
 
-    // Make the cloned atom draggable
+    // Make the cloned atom draggable within the play box
     newAtom.addEventListener('dragstart', function(e) {
       e.dataTransfer.setData('atom-id', atomId);
     });
@@ -53,4 +54,3 @@ document.getElementById('play-box').addEventListener('drop', function(e) {
     });
   }
 });
-
