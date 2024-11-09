@@ -1,27 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chemistry Bonding Game</title>
-    <link rel="stylesheet" href="game.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chemistry Bonding Game</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <!-- Inventory with atoms -->
-        <div class="inventory">
-            <h3>Inventory</h3>
-            <div class="atom carbon" draggable="true" data-type="carbon"></div>
-            <div class="atom hydrogen" draggable="true" data-type="hydrogen"></div>
-            <div class="atom oxygen" draggable="true" data-type="oxygen"></div>
+  <div id="game-container">
+    <div id="menu-bar">
+      <button id="toggle-inventory">🔽</button>
+      <div id="inventory">
+        <div class="atom" id="carbon" draggable="true">
+          <img src="carbon.png" alt="Carbon">
         </div>
-
-        <!-- Playbox area -->
-        <div class="playbox" id="playbox">
-            <h3>Playbox</h3>
+        <div class="atom" id="hydrogen" draggable="true">
+          <img src="hydrogen.png" alt="Hydrogen">
         </div>
+        <div class="atom" id="oxygen" draggable="true">
+          <img src="oxygen.png" alt="Oxygen">
+        </div>
+      </div>
     </div>
 
-    <script src="game.js"></script>
+    <div id="play-box">
+      <p>Place atoms here!</p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
