@@ -3,20 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bonding Game</title>
+    <title>Chemistry Bonding Game</title>
     <link rel="stylesheet" href="game.css">
 </head>
 <body>
-    <h1>Bonding Game: Create CH<sub>4</sub> (Methane)</h1>
+    <div class="container">
+        <!-- Inventory with atoms -->
+        <div class="inventory">
+            <h3>Inventory</h3>
+            <div class="atom carbon" draggable="true" data-type="carbon">C</div>
+            <div class="atom hydrogen" draggable="true" data-type="hydrogen">H</div>
+            <div class="atom oxygen" draggable="true" data-type="oxygen">O</div>
+        </div>
 
-    <!-- Inventory -->
-    <div class="inventory">
-        <div class="atom" id="carbon" draggable="true" data-type="carbon">C</div>
-        <div class="atom" id="hydrogen" draggable="true" data-type="hydrogen">H</div>
+        <!-- Playbox area -->
+        <div class="playbox" id="playbox">
+            <h3>Playbox</h3>
+        </div>
     </div>
-
-    <!-- Workspace -->
-    <div class="workspace" id="workspace"></div>
 
     <script src="game.js"></script>
 </body>
