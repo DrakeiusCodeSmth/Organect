@@ -1,8 +1,44 @@
-/* Updated styles to use PNG images */
+/* Basic styles for layout */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    display: flex;
+    width: 80%;
+    height: 90%;
+}
+
+.inventory, .playbox {
+    border: 2px solid #333;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.inventory {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.playbox {
+    width: 70%;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Atom styles */
 .atom {
     width: 50px;
     height: 50px;
-    background-size: contain;
+    background-size: cover;
     background-repeat: no-repeat;
     margin: 10px;
     cursor: pointer;
@@ -14,14 +50,23 @@
     transform: scale(1.2);
 }
 
+/* Background images for each atom type */
 .carbon {
-    background-image: url('images/carbon.png'); /* Replace with your actual file path */
+    background-image: url('images/carbon.png'); /* Update with actual file path */
 }
 
 .hydrogen {
-    background-image: url('images/hydrogen.png'); /* Replace with your actual file path */
+    background-image: url('images/hydrogen.png'); /* Update with actual file path */
 }
 
 .oxygen {
-    background-image: url('images/oxygen.png'); /* Replace with your actual file path */
+    background-image: url('images/oxygen.png'); /* Update with actual file path */
+}
+
+/* Bond style */
+.bond {
+    position: absolute;
+    background-color: #aaa;
+    height: 4px;
+    transition: width 0.5s ease, transform 0.5s ease;
 }
