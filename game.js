@@ -5,44 +5,49 @@ document.getElementById('toggle-inventory').addEventListener('click', function()
 
 let atomsInPlay = [];
 
-// Make sure the inventory atoms are only draggable and don't move out of the inventory.
+// Add event listeners to the inventory items
 document.querySelectorAll('.atom').forEach(atom => {
   atom.addEventListener('dragstart', function(e) {
-    // Set data for the atom being dragged
+    // Store the id of the atom being dragged
     e.dataTransfer.setData('atom-id', e.target.id);
   });
 });
 
+// Allow the play box to accept atoms
 document.getElementById('play-box').addEventListener('dragover', function(e) {
-  e.preventDefault();
+  e.preventDefault(); // Allow dropping
 });
 
 document.getElementById('play-box').addEventListener('drop', function(e) {
   e.preventDefault();
+
   const atomId = e.dataTransfer.getData('atom-id');
   const atom = document.getElementById(atomId);
 
-  // Only create a new atom if it hasn't been added to the play box yet
+  // Only clone and add the atom if it hasn't been placed in the play box already
   if (!atomsInPlay.includes(atomId)) {
     atomsInPlay.push(atomId);
 
-    // Clone the atom and place it inside the play box (position it based on drop point)
+    // Clone the atom (image) and position it in the play box
     const newAtom = atom.cloneNode(true);
     newAtom.style.position = 'absolute';
     newAtom.style.left = `${e.offsetX - 25}px`;
     newAtom.style.top = `${e.offsetY - 25}px`;
     e.target.appendChild(newAtom);
 
-    // Make the cloned atom draggable within the play box
+    // Make the cloned atom draggable
     newAtom.addEventListener('dragstart', function(e) {
       e.dataTransfer.setData('atom-id', atomId);
     });
 
-    // Handle double-click to create a bond (Metana)
+    // Double-click to create the Metana bond (if the condition is met)
     newAtom.addEventListener('dblclick', function() {
-      if (atomsInPlay.filter(id => id === 'hydrogen').length === 4 && atomsInPlay.includes('carbon')) {
+      const hydrogenCount = atomsInPlay.filter(id => id === 'hydrogen').length;
+      const carbonCount = atomsInPlay.filter(id => id === 'carbon').length;
+
+      if (hydrogenCount === 4 && carbonCount === 1) {
         alert('Metana bond created!');
-        // Logic for bond creation can go here
+        // Logic for creating the bond can be implemented here
       }
     });
   }
