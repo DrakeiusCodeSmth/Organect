@@ -82,8 +82,12 @@ document.getElementById('play-box').addEventListener('drop', function(e) {
 document.getElementById('play-box').addEventListener('mouseleave', function(e) {
   const atomsInPlayBox = document.querySelectorAll('#play-box .atom');
   atomsInPlayBox.forEach(atom => {
-    if (parseInt(atom.style.left) < 0 || parseInt(atom.style.top) < 0 ||
-        parseInt(atom.style.left) > 500 || parseInt(atom.style.top) > 500) {
+    const atomRect = atom.getBoundingClientRect();
+    const playBoxRect = document.getElementById('play-box').getBoundingClientRect();
+
+    // Remove atom if it's outside the play box
+    if (atomRect.left < playBoxRect.left || atomRect.top < playBoxRect.top ||
+        atomRect.right > playBoxRect.right || atomRect.bottom > playBoxRect.bottom) {
       atom.remove();
     }
   });
