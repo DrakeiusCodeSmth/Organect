@@ -5,11 +5,12 @@ document.getElementById('toggle-inventory').addEventListener('click', function()
 
 let atomsInPlay = [];
 
-// Add event listeners to the inventory items
-document.querySelectorAll('.atom').forEach(atom => {
-  atom.addEventListener('dragstart', function(e) {
-    // Store the id of the atom being dragged
-    e.dataTransfer.setData('atom-id', e.target.id);
+// Add event listeners to the inventory items (drag the image, not the div)
+document.querySelectorAll('.atom img').forEach(img => {
+  img.addEventListener('dragstart', function(e) {
+    // Store the id of the atom being dragged (use the image's parent div id)
+    const atomId = e.target.parentElement.id;
+    e.dataTransfer.setData('atom-id', atomId);
   });
 });
 
@@ -28,8 +29,8 @@ document.getElementById('play-box').addEventListener('drop', function(e) {
   if (!atomsInPlay.includes(atomId)) {
     atomsInPlay.push(atomId);
 
-    // Clone the atom (image) and position it in the play box
-    const newAtom = atom.cloneNode(true);
+    // Clone the image of the atom (not the whole div)
+    const newAtom = atom.querySelector('img').cloneNode(true);
     newAtom.style.position = 'absolute';
     newAtom.style.left = `${e.offsetX - 25}px`;
     newAtom.style.top = `${e.offsetY - 25}px`;
@@ -52,3 +53,4 @@ document.getElementById('play-box').addEventListener('drop', function(e) {
     });
   }
 });
+
