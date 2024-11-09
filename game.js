@@ -1,4 +1,4 @@
-let atomCount = { hydrogen: 0, carbon: 0 };
+let atomCount = { hydrogen: 0, carbon: 0, oxygen: 0 }; // Track atom counts
 const playbox = document.getElementById("playbox");
 
 document.querySelectorAll(".atom").forEach(atom => {
@@ -21,7 +21,7 @@ function handleDrop(e) {
     const atomType = e.dataTransfer.getData("atom-type");
 
     const newAtom = document.createElement("div");
-    newAtom.classList.add("atom", atomType);
+    newAtom.classList.add("atom", atomType); // Add the correct class to use the background image
     newAtom.style.position = "absolute";
     newAtom.style.left = `${e.offsetX - 25}px`;
     newAtom.style.top = `${e.offsetY - 25}px`;
@@ -37,7 +37,7 @@ function createBond(carbonAtom) {
     const hydrogens = Array.from(playbox.getElementsByClassName("hydrogen"));
 
     if (atomCount.hydrogen >= 4) {
-        const nearbyHydrogens = hydrogens.slice(0, 4);
+        const nearbyHydrogens = hydrogens.slice(0, 4); // Grab the first 4 hydrogens
         nearbyHydrogens.forEach((hydrogen, index) => {
             const bond = document.createElement("div");
             bond.classList.add("bond");
