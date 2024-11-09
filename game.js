@@ -1,4 +1,3 @@
-// JavaScript to enable drag-and-drop and bond formation
 let atomCount = { hydrogen: 0, carbon: 0 };
 const playbox = document.getElementById("playbox");
 
@@ -23,7 +22,6 @@ function handleDrop(e) {
 
     const newAtom = document.createElement("div");
     newAtom.classList.add("atom", atomType);
-    newAtom.textContent = atomType === "carbon" ? "C" : (atomType === "hydrogen" ? "H" : "O");
     newAtom.style.position = "absolute";
     newAtom.style.left = `${e.offsetX - 25}px`;
     newAtom.style.top = `${e.offsetY - 25}px`;
