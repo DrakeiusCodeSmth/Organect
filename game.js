@@ -1,70 +1,52 @@
-let atomCount = { hydrogen: 0, carbon: 0, oxygen: 0 }; // Track atom counts
-const playbox = document.getElementById("playbox");
-
-document.querySelectorAll(".atom").forEach(atom => {
-    atom.addEventListener("dragstart", handleDragStart);
+document.getElementById('toggle-inventory').addEventListener('click', function() {
+  const inventory = document.getElementById('inventory');
+  inventory.style.display = inventory.style.display === 'block' ? 'none' : 'block';
 });
 
-playbox.addEventListener("dragover", handleDragOver);
-playbox.addEventListener("drop", handleDrop);
+let atomsInPlay = [];
 
-function handleDragStart(e) {
-    e.dataTransfer.setData("atom-type", e.target.dataset.type);
-}
+document.querySelectorAll('.atom').forEach(atom => {
+  atom.addEventListener('dragstart', function(e) {
+    e.dataTransfer.setData('atom-id', e.target.id);
+  });
+});
 
-function handleDragOver(e) {
-    e.preventDefault();
-}
+document.getElementById('play-box').addEventListener('dragover', function(e) {
+  e.preventDefault();
+});
 
-function handleDrop(e) {
-    e.preventDefault();
-    const atomType = e.dataTransfer.getData("atom-type");
+document.getElementById('play-box').addEventListener('drop', function(e) {
+  e.preventDefault();
+  const atomId = e.dataTransfer.getData('atom-id');
+  const atom = document.getElementById(atomId);
+  const newAtom = atom.cloneNode(true);
+  newAtom.style.position = 'absolute';
+  newAtom.style.left = `${e.offsetX - 25}px`;
+  newAtom.style.top = `${e.offsetY - 25}px`;
 
-    const newAtom = document.createElement("div");
-    newAtom.classList.add("atom", atomType); // Add the correct class to use the background image
-    newAtom.style.position = "absolute";
-    newAtom.style.left = `${e.offsetX - 25}px`;
-    newAtom.style.top = `${e.offsetY - 25}px`;
-    playbox.appendChild(newAtom);
+  if (!atomsInPlay.includes(atomId)) {
+    atomsInPlay.push(atomId);
+  }
 
-    atomCount[atomType]++;
-    if (atomType === "carbon") {
-        newAtom.addEventListener("dblclick", () => createBond(newAtom));
+  e.target.appendChild(newAtom);
+
+  newAtom.addEventListener('dragstart', function(e) {
+    e.dataTransfer.setData('atom-id', atomId);
+  });
+
+  newAtom.addEventListener('dblclick', function() {
+    if (atomsInPlay.filter(id => id === 'hydrogen').length === 4 && atomsInPlay.includes('carbon')) {
+      alert('Metana bond created!');
+      // Logic to show the bond can be added here
     }
-}
+  });
+});
 
-function createBond(carbonAtom) {
-    const hydrogens = Array.from(playbox.getElementsByClassName("hydrogen"));
-
-    if (atomCount.hydrogen >= 4) {
-        const nearbyHydrogens = hydrogens.slice(0, 4); // Grab the first 4 hydrogens
-        nearbyHydrogens.forEach((hydrogen, index) => {
-            const bond = document.createElement("div");
-            bond.classList.add("bond");
-            playbox.appendChild(bond);
-
-            // Position and rotate bond between Carbon and each Hydrogen
-            positionBond(carbonAtom, hydrogen, bond);
-        });
+document.getElementById('play-box').addEventListener('dragleave', function(e) {
+  const atomsInPlay = document.querySelectorAll('#play-box .atom');
+  atomsInPlay.forEach(atom => {
+    if (parseInt(atom.style.left) > 500 || parseInt(atom.style.top) > 500) {
+      atom.remove();
     }
-}
-
-function positionBond(carbonAtom, hydrogen, bond) {
-    const cRect = carbonAtom.getBoundingClientRect();
-    const hRect = hydrogen.getBoundingClientRect();
-    const cx = cRect.left + cRect.width / 2;
-    const cy = cRect.top + cRect.height / 2;
-    const hx = hRect.left + hRect.width / 2;
-    const hy = hRect.top + hRect.height / 2;
-
-    const dx = hx - cx;
-    const dy = hy - cy;
-    const distance = Math.sqrt(dx * dx + dy * dy);
-
-    bond.style.width = `${distance}px`;
-    bond.style.left = `${cx}px`;
-    bond.style.top = `${cy}px`;
-
-    const angle = Math.atan2(dy, dx) * (180 / Math.PI);
-    bond.style.transform = `rotate(${angle}deg)`;
-}
+  });
+});
