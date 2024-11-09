@@ -1,35 +1,27 @@
-body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-}
-
-.inventory {
-    display: flex;
-    gap: 10px;
-    margin: 20px auto;
-    padding: 10px;
-    border: 2px solid black;
-    width: 200px;
-    justify-content: center;
-}
-
+/* Updated styles to use PNG images */
 .atom {
     width: 50px;
     height: 50px;
-    background-color: lightblue;
-    border: 1px solid black;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 20px;
-    cursor: grab;
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin: 10px;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.2s ease;
 }
 
-.workspace {
-    position: relative;
-    width: 80%;
-    height: 400px;
-    border: 2px solid black;
-    margin: 20px auto;
+.atom:hover {
+    transform: scale(1.2);
+}
+
+.carbon {
+    background-image: url('path/to/carbon.png'); /* Replace with your actual file path */
+}
+
+.hydrogen {
+    background-image: url('path/to/hydrogen.png'); /* Replace with your actual file path */
+}
+
+.oxygen {
+    background-image: url('path/to/oxygen.png'); /* Replace with your actual file path */
 }
