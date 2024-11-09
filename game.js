@@ -32,14 +32,37 @@ document.getElementById('play-box').addEventListener('drop', function(e) {
     // Clone the image of the atom (not the whole div)
     const newAtom = atom.querySelector('img').cloneNode(true);
     newAtom.style.position = 'absolute';
-    // Make sure the new atom is positioned correctly inside the play box
     newAtom.style.left = `${e.offsetX - 25}px`; 
     newAtom.style.top = `${e.offsetY - 25}px`;
     e.target.appendChild(newAtom);
 
     // Make the cloned atom draggable within the play box
-    newAtom.addEventListener('dragstart', function(e) {
-      e.dataTransfer.setData('atom-id', atomId);
+    newAtom.addEventListener('mousedown', function(e) {
+      const playBox = document.getElementById('play-box');
+      const playBoxRect = playBox.getBoundingClientRect();
+      const offsetX = e.clientX - newAtom.getBoundingClientRect().left;
+      const offsetY = e.clientY - newAtom.getBoundingClientRect().top;
+
+      // Dynamically drag the atom within the play box
+      function moveAtom(e) {
+        let newLeft = e.clientX - playBoxRect.left - offsetX;
+        let newTop = e.clientY - playBoxRect.top - offsetY;
+
+        // Constrain the atom within the play box
+        newLeft = Math.max(0, Math.min(newLeft, playBoxRect.width - 50)); // 50px is the atom width
+        newTop = Math.max(0, Math.min(newTop, playBoxRect.height - 50)); // 50px is the atom height
+
+        newAtom.style.left = `${newLeft}px`;
+        newAtom.style.top = `${newTop}px`;
+      }
+
+      // Add mousemove listener to drag the atom dynamically
+      document.addEventListener('mousemove', moveAtom);
+
+      // Stop moving the atom when mouse is released
+      document.addEventListener('mouseup', function() {
+        document.removeEventListener('mousemove', moveAtom);
+      });
     });
 
     // Double-click to create the Metana bond (if the condition is met)
@@ -53,4 +76,15 @@ document.getElementById('play-box').addEventListener('drop', function(e) {
       }
     });
   }
+});
+
+// Remove atoms that are dragged outside the play box
+document.getElementById('play-box').addEventListener('mouseleave', function(e) {
+  const atomsInPlayBox = document.querySelectorAll('#play-box .atom');
+  atomsInPlayBox.forEach(atom => {
+    if (parseInt(atom.style.left) < 0 || parseInt(atom.style.top) < 0 ||
+        parseInt(atom.style.left) > 500 || parseInt(atom.style.top) > 500) {
+      atom.remove();
+    }
+  });
 });
