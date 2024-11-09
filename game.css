@@ -15,13 +15,13 @@
 }
 
 .carbon {
-    background-image: url('path/to/carbon.png'); /* Replace with your actual file path */
+    background-image: url('images/carbon.png'); /* Replace with your actual file path */
 }
 
 .hydrogen {
-    background-image: url('path/to/hydrogen.png'); /* Replace with your actual file path */
+    background-image: url('images/hydrogen.png'); /* Replace with your actual file path */
 }
 
 .oxygen {
-    background-image: url('path/to/oxygen.png'); /* Replace with your actual file path */
+    background-image: url('images/oxygen.png'); /* Replace with your actual file path */
 }
