@@ -1,64 +1,72 @@
-const inventory = document.querySelector('.inventory');
-const workspace = document.getElementById('workspace');
+// JavaScript to enable drag-and-drop and bond formation
+let atomCount = { hydrogen: 0, carbon: 0 };
+const playbox = document.getElementById("playbox");
 
-// Drag start event for inventory atoms
-inventory.addEventListener('dragstart', (event) => {
-    event.dataTransfer.setData('type', event.target.dataset.type);
+document.querySelectorAll(".atom").forEach(atom => {
+    atom.addEventListener("dragstart", handleDragStart);
 });
 
-// Drag over workspace to allow drop
-workspace.addEventListener('dragover', (event) => {
-    event.preventDefault();
-});
+playbox.addEventListener("dragover", handleDragOver);
+playbox.addEventListener("drop", handleDrop);
 
-// Drop event in workspace
-workspace.addEventListener('drop', (event) => {
-    event.preventDefault();
-    const type = event.dataTransfer.getData('type');
+function handleDragStart(e) {
+    e.dataTransfer.setData("atom-type", e.target.dataset.type);
+}
 
-    // Clone the dragged atom from inventory
-    const newAtom = document.createElement('div');
-    newAtom.classList.add('atom');
-    newAtom.setAttribute('data-type', type);
-    newAtom.style.position = 'absolute';
-    newAtom.style.left = `${event.clientX - workspace.offsetLeft - 25}px`;
-    newAtom.style.top = `${event.clientY - workspace.offsetTop - 25}px`;
+function handleDragOver(e) {
+    e.preventDefault();
+}
 
-    if (type === 'carbon') {
-        newAtom.textContent = 'C';
-        newAtom.addEventListener('dblclick', bondHydrogens);
-    } else if (type === 'hydrogen') {
-        newAtom.textContent = 'H';
+function handleDrop(e) {
+    e.preventDefault();
+    const atomType = e.dataTransfer.getData("atom-type");
+
+    const newAtom = document.createElement("div");
+    newAtom.classList.add("atom", atomType);
+    newAtom.textContent = atomType === "carbon" ? "C" : (atomType === "hydrogen" ? "H" : "O");
+    newAtom.style.position = "absolute";
+    newAtom.style.left = `${e.offsetX - 25}px`;
+    newAtom.style.top = `${e.offsetY - 25}px`;
+    playbox.appendChild(newAtom);
+
+    atomCount[atomType]++;
+    if (atomType === "carbon") {
+        newAtom.addEventListener("dblclick", () => createBond(newAtom));
     }
+}
 
-    workspace.appendChild(newAtom);
-});
+function createBond(carbonAtom) {
+    const hydrogens = Array.from(playbox.getElementsByClassName("hydrogen"));
 
-// Bonding function
-function bondHydrogens(event) {
-    const carbon = event.target;
-    const hydrogens = Array.from(workspace.querySelectorAll('.atom[data-type="hydrogen"]'));
-    const bondDistance = 100;
-    const angles = [0, 90, 180, 270]; // Position hydrogens around the carbon
+    if (atomCount.hydrogen >= 4) {
+        const nearbyHydrogens = hydrogens.slice(0, 4);
+        nearbyHydrogens.forEach((hydrogen, index) => {
+            const bond = document.createElement("div");
+            bond.classList.add("bond");
+            playbox.appendChild(bond);
 
-    hydrogens.slice(0, 4).forEach((hydrogen, index) => {
-        const angleInRadians = angles[index] * (Math.PI / 180);
-        const x = bondDistance * Math.cos(angleInRadians);
-        const y = bondDistance * Math.sin(angleInRadians);
-        hydrogen.style.left = `${parseFloat(carbon.style.left) + 25 + x}px`;
-        hydrogen.style.top = `${parseFloat(carbon.style.top) + 25 + y}px`;
+            // Position and rotate bond between Carbon and each Hydrogen
+            positionBond(carbonAtom, hydrogen, bond);
+        });
+    }
+}
 
-        // Create a bond line
-        const bond = document.createElement('div');
-        bond.classList.add('bond');
-        bond.style.position = 'absolute';
-        bond.style.width = `${bondDistance}px`;
-        bond.style.height = '4px';
-        bond.style.backgroundColor = 'grey';
-        bond.style.transformOrigin = '0 0';
-        bond.style.left = `${parseFloat(carbon.style.left) + 25}px`;
-        bond.style.top = `${parseFloat(carbon.style.top) + 25}px`;
-        bond.style.transform = `rotate(${angles[index]}deg)`;
-        workspace.appendChild(bond);
-    });
+function positionBond(carbonAtom, hydrogen, bond) {
+    const cRect = carbonAtom.getBoundingClientRect();
+    const hRect = hydrogen.getBoundingClientRect();
+    const cx = cRect.left + cRect.width / 2;
+    const cy = cRect.top + cRect.height / 2;
+    const hx = hRect.left + hRect.width / 2;
+    const hy = hRect.top + hRect.height / 2;
+
+    const dx = hx - cx;
+    const dy = hy - cy;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+
+    bond.style.width = `${distance}px`;
+    bond.style.left = `${cx}px`;
+    bond.style.top = `${cy}px`;
+
+    const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+    bond.style.transform = `rotate(${angle}deg)`;
 }
