@@ -36,7 +36,6 @@ body {
 .atom {
   width: 40px;
   height: 40px;
-  position: relative;
   cursor: pointer;
   display: flex;
   align-items: center;
