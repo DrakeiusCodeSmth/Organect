@@ -25,16 +25,16 @@ body {
   gap: 5px;
   overflow: hidden;
   max-height: 0; /* Collapsed state */
-  transition: max-height 0.5s ease; /* Smooth transition */
+  transition: max-height 0.5s ease;
 }
 
 #atom-container.expanded {
-  max-height: 150px; /* Expanded state height, adjust as needed */
+  max-height: 150px;
 }
 
 .atom {
-  width: 40px;
-  height: 40px;
+  width: 60px; /* Bigger size in inventory */
+  height: 60px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -47,7 +47,11 @@ body {
   object-fit: contain;
 }
 
-/* Playbox styling */
+.playbox-atom {
+  width: 40px; /* Set a smaller size for atoms in playbox */
+  height: 40px;
+}
+
 #playbox {
   width: 500px;
   height: 500px;
@@ -58,6 +62,7 @@ body {
   align-items: center;
   justify-content: center;
   background-color: #ffffff;
+  overflow: hidden; /* Prevent overflow for dragging */
 }
 
 #playbox p {
@@ -65,7 +70,6 @@ body {
   font-style: italic;
 }
 
-/* Molecule name display */
 #molecule-name {
   margin-top: 20px;
   font-size: 24px;
