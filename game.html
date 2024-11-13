@@ -7,26 +7,24 @@
   <link rel="stylesheet" href="game.css">
 </head>
 <body>
-  <div id="game-container">
-    <div id="menu-bar">
-      <button id="toggle-inventory">🔽</button>
-      <div id="inventory">
-        <div class="atom" id="carbon" draggable="true">
-          <img src="images/carbon.png" alt="Carbon">
-        </div>
-        <div class="atom" id="hydrogen" draggable="true">
-          <img src="images/hydrogen.png" alt="Hydrogen">
-        </div>
-        <div class="atom" id="oxygen" draggable="true">
-          <img src="images/oxygen.png" alt="Oxygen">
-        </div>
-      </div>
-    </div>
 
-    <div id="play-box">
-      <p>Place atoms here!</p>
+  <!-- Inventory Bar -->
+  <div id="inventory">
+    <button id="expand-button">Inventory</button>
+    <div id="atom-container" class="collapsed">
+      <div class="atom" id="carbon"><img src="carbon.png" alt="Carbon"></div>
+      <div class="atom" id="hydrogen"><img src="hydrogen.png" alt="Hydrogen"></div>
+      <div class="atom" id="oxygen"><img src="oxygen.png" alt="Oxygen"></div>
     </div>
   </div>
+
+  <!-- Playbox -->
+  <div id="playbox">
+    <p>Drag atoms here to form molecules.</p>
+  </div>
+
+  <!-- Display Bonded Molecule Name -->
+  <div id="molecule-name"></div>
 
   <script src="game.js"></script>
 </body>
