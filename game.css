@@ -1,67 +1,77 @@
+/* Basic styling */
 body {
   font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-}
-
-#game-container {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-}
-
-#menu-bar {
-  position: relative;
-  margin-top: 20px;
+  height: 100vh;
+  margin: 0;
+  background-color: #f0f0f0;
 }
 
 #inventory {
-  display: none;
-  margin-top: 10px;
+  position: absolute;
+  top: 10px;
+  left: 10px;
 }
 
-#inventory div {
-  cursor: pointer;
-  display: inline-block;
+#expand-button {
   padding: 10px;
+  cursor: pointer;
 }
 
-.atom img {
-  width: 50px;
-  transition: transform 0.2s;
+#atom-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  transition: max-height 0.3s;
+  overflow: hidden;
+  max-height: 0;
 }
 
-.atom img:hover {
-  transform: scale(1.2);
+#atom-container.expanded {
+  max-height: 150px;
 }
 
-#play-box {
-  width: 500px;
-  height: 500px;
-  border: 2px dashed #000;
-  margin-top: 20px;
+.atom {
+  width: 40px;
+  height: 40px;
   position: relative;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-#play-box p {
-  color: #555;
+.atom img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
-#toggle-inventory {
-  padding: 10px;
-  cursor: pointer;
-  font-size: 20px;
-  transition: transform 0.2s;
+/* Playbox styling */
+#playbox {
+  width: 500px;
+  height: 500px;
+  border: 2px dashed #aaa;
+  position: relative;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
 }
 
-#toggle-inventory:hover {
-  transform: scale(1.2);
+#playbox p {
+  color: #666;
+  font-style: italic;
 }
 
-#play-box .atom {
-  position: absolute;
-  cursor: grab;
+/* Molecule name display */
+#molecule-name {
+  margin-top: 20px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
 }
