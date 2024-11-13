@@ -24,13 +24,13 @@ body {
   display: flex;
   flex-direction: column;
   gap: 5px;
-  transition: max-height 0.3s;
   overflow: hidden;
-  max-height: 0;
+  max-height: 0; /* Collapsed state */
+  transition: max-height 0.5s ease; /* Smooth transition */
 }
 
 #atom-container.expanded {
-  max-height: 150px;
+  max-height: 150px; /* Expanded state height, adjust as needed */
 }
 
 .atom {
