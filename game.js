@@ -2,11 +2,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const expandButton = document.getElementById("expand-button");
   const atomContainer = document.getElementById("atom-container");
   const playbox = document.getElementById("playbox");
-  const bonds = document.getElementById("bonds");
 
   let draggedAtom = null;
 
-  // Toggle inventory
+  // Expand/collapse inventory
   expandButton.addEventListener("click", () => {
     atomContainer.classList.toggle("expanded");
   });
@@ -29,11 +28,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     draggedAtom.onmouseup = function (event) {
       if (isInsidePlaybox(event.pageX, event.pageY)) {
+        // Add atom to playbox
         playbox.appendChild(draggedAtom);
         draggedAtom.style.left = `${event.pageX - playbox.offsetLeft - draggedAtom.offsetWidth / 2}px`;
         draggedAtom.style.top = `${event.pageY - playbox.offsetTop - draggedAtom.offsetHeight / 2}px`;
         enableDraggingWithinPlaybox(draggedAtom);
-        checkBonding();
       } else {
         // Remove atom if dropped outside playbox
         draggedAtom.remove();
