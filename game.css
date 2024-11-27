@@ -57,7 +57,6 @@ body {
   height: 500px;
   border: 2px dashed #aaa;
   position: relative;
-  margin-top: 20px;
   background-color: #ffffff;
   overflow: hidden;
 }
@@ -81,4 +80,3 @@ body {
   color: #333;
   text-align: center;
 }
-
