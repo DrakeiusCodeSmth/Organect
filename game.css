@@ -42,7 +42,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 50%; /* Retain circular shape */
+  border-radius: 50%; /* Keeps atoms circular */
 }
 
 .atom img {
