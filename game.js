@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const playbox = document.getElementById("playbox");
 
   let draggedAtom = null;
-  let draggedBond = null;  // Added for bond dragging behavior
+  let draggedBond = null;
 
   // Expand/collapse inventory
   expandButton.addEventListener("click", () => {
@@ -49,37 +49,6 @@ document.addEventListener("DOMContentLoaded", () => {
       document.removeEventListener("mousemove", onMouseMove);
       draggedAtom.onmouseup = null;
       draggedAtom = null;
-    }
-  }
-
-  function startDragFromBond(event) {
-    const target = event.target.closest(".bond");
-    draggedBond = target.cloneNode(true);
-    draggedBond.classList.add("playbox-bond");
-    document.body.appendChild(draggedBond);
-
-    moveAt(event.pageX, event.pageY);
-
-    const onMouseMove = (event) => moveAt(event.pageX, event.pageY);
-    document.addEventListener("mousemove", onMouseMove);
-
-    draggedBond.onmouseup = function (event) {
-      if (isInsidePlaybox(event.pageX, event.pageY)) {
-        playbox.appendChild(draggedBond);
-        draggedBond.style.left = `${event.pageX - playbox.offsetLeft - draggedBond.offsetWidth / 2}px`;
-        draggedBond.style.top = `${event.pageY - playbox.offsetTop - draggedBond.offsetHeight / 2}px`;
-        enableDragging(draggedBond); // Make bond draggable
-        checkBonding();
-      } else {
-        draggedBond.remove();
-      }
-      cleanup();
-    };
-
-    function cleanup() {
-      document.removeEventListener("mousemove", onMouseMove);
-      draggedBond.onmouseup = null;
-      draggedBond = null;
     }
   }
 
@@ -135,6 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   }
 
+  // Function to check for bonding conditions and display the corresponding bond
   function checkBonding() {
     const atoms = Array.from(playbox.querySelectorAll(".playbox-atom"));
     const atomCounts = { carbon: 0, hydrogen: 0, oxygen: 0 };
@@ -143,30 +113,16 @@ document.addEventListener("DOMContentLoaded", () => {
       atomCounts[atom.id]++;
     });
 
+    // Check conditions for bonding
     if (atomCounts.carbon === 1 && atomCounts.hydrogen === 4) {
-      createBondingImage("ch4bond.png");
+      document.getElementById("ch4bond").style.display = "block";  // Display CH4 bond
+      document.getElementById("h2obond").style.display = "none";  // Hide H2O bond
     } else if (atomCounts.oxygen === 1 && atomCounts.hydrogen === 2) {
-      createBondingImage("h2obond.png");
+      document.getElementById("ch4bond").style.display = "none";  // Hide CH4 bond
+      document.getElementById("h2obond").style.display = "block";  // Display H2O bond
+    } else {
+      document.getElementById("ch4bond").style.display = "none";  // Hide CH4 bond
+      document.getElementById("h2obond").style.display = "none";  // Hide H2O bond
     }
-  }
-
-  function createBondingImage(imageSrc) {
-    playbox.querySelectorAll(".playbox-atom").forEach(atom => atom.remove());
-
-    const bondImage = document.createElement("img");
-    bondImage.src = `./images/${imageSrc}`;
-    bondImage.classList.add("bonding-image");
-
-    // Ensure the background is transparent by setting the style
-    bondImage.style.background = "transparent";
-    playbox.appendChild(bondImage);
-
-    // Center bonding image in playbox
-    bondImage.style.position = "absolute";
-    bondImage.style.left = "50%";
-    bondImage.style.top = "50%";
-    bondImage.style.transform = "translate(-50%, -50%)";
-
-    enableDragging(bondImage);
   }
 });
