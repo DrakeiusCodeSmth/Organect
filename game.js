@@ -24,15 +24,30 @@ document.addEventListener("DOMContentLoaded", () => {
     moveAt(event.pageX, event.pageY);
 
     function moveAt(pageX, pageY) {
-      draggedAtom.style.left = `${pageX - draggedAtom.offsetWidth / 2}px`;
-      draggedAtom.style.top = `${pageY - draggedAtom.offsetHeight / 2}px`;
+      const playboxRect = playbox.getBoundingClientRect();
+
+      // Constrain atom to playbox boundaries
+      const newX = Math.min(
+        Math.max(pageX - draggedAtom.offsetWidth / 2, playboxRect.left),
+        playboxRect.right - draggedAtom.offsetWidth
+      );
+
+      const newY = Math.min(
+        Math.max(pageY - draggedAtom.offsetHeight / 2, playboxRect.top),
+        playboxRect.bottom - draggedAtom.offsetHeight
+      );
+
+      draggedAtom.style.left = `${newX}px`;
+      draggedAtom.style.top = `${newY}px`;
     }
 
     const onMouseMove = (event) => moveAt(event.pageX, event.pageY);
     document.addEventListener("mousemove", onMouseMove);
 
     draggedAtom.onmouseup = function (event) {
-      if (isInsidePlaybox(event.pageX, event.pageY)) {
+      const isInside = isInsidePlaybox(event.pageX, event.pageY);
+
+      if (isInside) {
         playbox.appendChild(draggedAtom);
         draggedAtom.style.position = "absolute";
         draggedAtom.style.left = `${event.pageX - playbox.offsetLeft - draggedAtom.offsetWidth / 2}px`;
@@ -64,8 +79,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const moveAtom = (event) => {
         const rect = playbox.getBoundingClientRect();
-        const newX = Math.min(Math.max(event.clientX - rect.left - shiftX, 0), rect.width - atom.offsetWidth);
-        const newY = Math.min(Math.max(event.clientY - rect.top - shiftY, 0), rect.height - atom.offsetHeight);
+
+        const newX = Math.min(
+          Math.max(event.clientX - rect.left - shiftX, 0),
+          rect.width - atom.offsetWidth
+        );
+        const newY = Math.min(
+          Math.max(event.clientY - rect.top - shiftY, 0),
+          rect.height - atom.offsetHeight
+        );
+
         atom.style.left = `${newX}px`;
         atom.style.top = `${newY}px`;
       };
