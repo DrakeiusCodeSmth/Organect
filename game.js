@@ -32,7 +32,8 @@ document.addEventListener("DOMContentLoaded", () => {
         playbox.appendChild(draggedAtom);
         draggedAtom.style.left = `${event.pageX - playbox.offsetLeft - draggedAtom.offsetWidth / 2}px`;
         draggedAtom.style.top = `${event.pageY - playbox.offsetTop - draggedAtom.offsetHeight / 2}px`;
-        enableDraggingWithinPlaybox(draggedAtom);
+        enableDragging(draggedAtom); // Make atom draggable
+        checkBonding();
       } else {
         // Remove atom if dropped outside playbox
         draggedAtom.remove();
@@ -58,35 +59,38 @@ document.addEventListener("DOMContentLoaded", () => {
     return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
   }
 
-  // Enable dragging for atoms already in playbox
-  function enableDraggingWithinPlaybox(atom) {
-    atom.onmousedown = function (event) {
-      const shiftX = event.clientX - atom.getBoundingClientRect().left;
-      const shiftY = event.clientY - atom.getBoundingClientRect().top;
+  function enableDragging(element) {
+    element.onmousedown = function (event) {
+      const shiftX = event.clientX - element.getBoundingClientRect().left;
+      const shiftY = event.clientY - element.getBoundingClientRect().top;
 
-      const moveAtom = (event) => {
+      const moveElement = (event) => {
         const rect = playbox.getBoundingClientRect();
 
-        // Constrain atom to playbox boundaries
+        // Constrain element to playbox boundaries
         const newX = Math.min(
           Math.max(event.clientX - rect.left - shiftX, 0),
-          rect.width - atom.offsetWidth
+          rect.width - element.offsetWidth
         );
         const newY = Math.min(
           Math.max(event.clientY - rect.top - shiftY, 0),
-          rect.height - atom.offsetHeight
+          rect.height - element.offsetHeight
         );
 
-        atom.style.left = `${newX}px`;
-        atom.style.top = `${newY}px`;
+        element.style.left = `${newX}px`;
+        element.style.top = `${newY}px`;
       };
 
-      document.addEventListener("mousemove", moveAtom);
+      document.addEventListener("mousemove", moveElement);
 
-      atom.onmouseup = function () {
-        document.removeEventListener("mousemove", moveAtom);
-        atom.onmouseup = null;
+      element.onmouseup = function () {
+        document.removeEventListener("mousemove", moveElement);
+        element.onmouseup = null;
       };
+    };
+
+    element.ondragstart = function () {
+      return false; // Disable default browser dragging behavior
     };
   }
 
@@ -99,24 +103,28 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     if (atomCounts.carbon === 1 && atomCounts.hydrogen === 4) {
-      createMolecule("Methane (CH₄)", atoms, "cross");
+      createBondingImage("ch4bond.png");
     } else if (atomCounts.oxygen === 1 && atomCounts.hydrogen === 2) {
-      createMolecule("Water (H₂O)", atoms, "bent");
+      createBondingImage("h2obond.png");
     }
   }
 
-  function createMolecule(name, atoms, layout) {
-    atoms.forEach(atom => atom.remove());
+  function createBondingImage(imageSrc) {
+    // Remove existing atoms
+    playbox.querySelectorAll(".playbox-atom").forEach(atom => atom.remove());
 
-    const molecule = document.createElement("div");
-    molecule.classList.add("molecule");
-    playbox.appendChild(molecule);
+    // Add bonding image
+    const bondImage = document.createElement("img");
+    bondImage.src = `./images/${imageSrc}`;
+    bondImage.classList.add("bonding-image");
+    playbox.appendChild(bondImage);
 
-    const nameTag = document.createElement("div");
-    nameTag.classList.add("bond-name");
-    nameTag.textContent = name;
-    molecule.appendChild(nameTag);
+    // Center bonding image in playbox
+    bondImage.style.position = "absolute";
+    bondImage.style.left = "50%";
+    bondImage.style.top = "50%";
+    bondImage.style.transform = "translate(-50%, -50%)";
 
-    enableDraggingWithinPlaybox(molecule);
+    enableDragging(bondImage); // Make bonding image draggable
   }
 });
