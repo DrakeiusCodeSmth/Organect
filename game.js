@@ -9,23 +9,20 @@ expandButton.addEventListener("click", () => {
 });
 
 let draggedAtom = null;
-let isTouch = false;
 
 document.querySelectorAll(".atom").forEach(atom => {
   atom.addEventListener("mousedown", startDrag);
-  atom.addEventListener("touchstart", startDrag, { passive: true });
 });
 
 function startDrag(event) {
   event.preventDefault();
-  isTouch = event.type === "touchstart";
 
   const target = event.target.closest(".atom");
   draggedAtom = target.cloneNode(true);
   draggedAtom.classList.add("playbox-atom");
   document.body.appendChild(draggedAtom);
 
-  moveAt(event.pageX || event.touches[0].pageX, event.pageY || event.touches[0].pageY);
+  moveAt(event.pageX, event.pageY);
 
   function moveAt(pageX, pageY) {
     draggedAtom.style.position = "absolute";
@@ -35,13 +32,11 @@ function startDrag(event) {
   }
 
   const onMouseMove = (event) => moveAt(event.pageX, event.pageY);
-  const onTouchMove = (event) => moveAt(event.touches[0].pageX, event.touches[0].pageY);
 
-  if (isTouch) document.addEventListener("touchmove", onTouchMove);
-  else document.addEventListener("mousemove", onMouseMove);
+  document.addEventListener("mousemove", onMouseMove);
 
-  draggedAtom.onmouseup = draggedAtom.ontouchend = function (event) {
-    if (isInsidePlaybox(event.pageX || event.changedTouches[0].pageX, event.pageY || event.changedTouches[0].pageY)) {
+  draggedAtom.onmouseup = function (event) {
+    if (isInsidePlaybox(event.pageX, event.pageY)) {
       playbox.appendChild(draggedAtom);
       draggedAtom.style.position = "absolute";
       draggedAtom.style.left = `${event.pageX - playbox.offsetLeft - draggedAtom.offsetWidth / 2}px`;
@@ -56,9 +51,7 @@ function startDrag(event) {
 
   function cleanup() {
     document.removeEventListener("mousemove", onMouseMove);
-    document.removeEventListener("touchmove", onTouchMove);
     draggedAtom.onmouseup = null;
-    draggedAtom.ontouchend = null;
     draggedAtom = null;
   }
 }
@@ -69,8 +62,9 @@ function isInsidePlaybox(x, y) {
 }
 
 function enablePlayboxDragging(atom) {
-  atom.onmousedown = atom.ontouchstart = function(event) {
+  atom.onmousedown = function(event) {
     event.preventDefault();
+
     const moveWithinPlaybox = (pageX, pageY) => {
       const rect = playbox.getBoundingClientRect();
       const newX = Math.min(Math.max(pageX - rect.left - atom.offsetWidth / 2, 0), rect.width - atom.offsetWidth);
@@ -80,16 +74,12 @@ function enablePlayboxDragging(atom) {
     };
 
     const onMouseMove = (event) => moveWithinPlaybox(event.pageX, event.pageY);
-    const onTouchMove = (event) => moveWithinPlaybox(event.touches[0].pageX, event.touches[0].pageY);
 
-    if (isTouch) document.addEventListener("touchmove", onTouchMove);
-    else document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mousemove", onMouseMove);
 
-    atom.onmouseup = atom.ontouchend = function() {
+    atom.onmouseup = function() {
       document.removeEventListener("mousemove", onMouseMove);
-      document.removeEventListener("touchmove", onTouchMove);
       atom.onmouseup = null;
-      atom.ontouchend = null;
     };
   };
 }
@@ -103,28 +93,12 @@ function checkBonding() {
   });
 
   if (atomCounts.carbon === 1 && atomCounts.hydrogen === 4) {
-    displayBond("Methane (CH₄)", atoms);
+    moleculeNameDisplay.textContent = "Methane (CH₄)";
   } else if (atomCounts.oxygen === 1 && atomCounts.hydrogen === 2) {
-    displayBond("Water (H₂O)", atoms);
+    moleculeNameDisplay.textContent = "Water (H₂O)";
   } else if (atomCounts.carbon === 1 && atomCounts.oxygen === 2) {
-    displayBond("Carbon Dioxide (CO₂)", atoms);
+    moleculeNameDisplay.textContent = "Carbon Dioxide (CO₂)";
   } else {
     moleculeNameDisplay.textContent = "";
-    bonds.innerHTML = ""; // Clear bonds if no valid molecule
   }
 }
-
-function displayBond(name, atoms) {
-  moleculeNameDisplay.textContent = name;
-  bonds.innerHTML = ""; // Clear previous bonds
-
-  // Draw bonds as connecting lines between atoms
-  const positions = atoms.map(atom => ({
-    x: atom.offsetLeft + atom.offsetWidth / 2,
-    y: atom.offsetTop + atom.offsetHeight / 2,
-  }));
-
-  for (let i = 0; i < positions.length - 1; i++) {
-    for (let j = i + 1; j <
-
-
