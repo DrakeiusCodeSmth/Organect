@@ -1,11 +1,11 @@
 body {
   font-family: Arial, sans-serif;
+  margin: 0;
+  background-color: #f0f0f0;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  margin: 0;
-  background-color: #f0f0f0;
 }
 
 #inventory {
@@ -23,18 +23,18 @@ body {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  overflow: hidden;
   max-height: 0;
+  overflow: hidden;
   transition: max-height 0.5s ease;
 }
 
 #atom-container.expanded {
-  max-height: 300px;
+  max-height: 200px;
 }
 
 .atom {
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
   cursor: pointer;
 }
 
@@ -45,12 +45,11 @@ body {
 }
 
 #playbox {
+  position: relative;
   width: 600px;
   height: 600px;
   border: 2px dashed #aaa;
-  position: relative;
   background-color: white;
-  overflow: hidden;
 }
 
 #bonds {
@@ -67,18 +66,17 @@ body {
   text-align: center;
   background: white;
   border: 1px solid #aaa;
-  padding: 3px 5px;
-  border-radius: 3px;
+  padding: 5px;
   transform: translate(-50%, -50%);
-  top: -20px;
+  top: -25px;
+}
+
+.playbox-atom {
+  position: absolute;
+  cursor: move;
 }
 
 .bond-line {
   stroke: grey;
   stroke-width: 2;
-}
-
-.molecule {
-  position: absolute;
-  cursor: move;
 }
