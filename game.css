@@ -36,6 +36,11 @@ body {
   width: 80px;
   height: 80px;
   cursor: pointer;
+  background-color: white; /* Ensure visible against light backgrounds */
+  border: 1px solid #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .atom img {
