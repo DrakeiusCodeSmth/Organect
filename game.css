@@ -56,6 +56,7 @@ body {
   border: 2px dashed #aaa;
   position: relative;
   background-color: #fff;
+  overflow: hidden;
 }
 
 #bonds {
@@ -65,8 +66,25 @@ body {
   pointer-events: none;
 }
 
-#molecule-name {
-  margin-top: 20px;
-  font-size: 24px;
+.bond-name {
+  position: absolute;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
   text-align: center;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #aaa;
+}
+
+.bond-line {
+  stroke: grey;
+  stroke-width: 2;
+}
+
+.molecule {
+  position: absolute;
+  cursor: move;
 }
