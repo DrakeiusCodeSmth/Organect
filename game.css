@@ -22,23 +22,20 @@ body {
 #atom-container {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 10px;
   overflow: hidden;
-  max-height: 0; /* Collapsed state */
+  max-height: 0;
   transition: max-height 0.5s ease;
 }
 
 #atom-container.expanded {
-  max-height: 300px; /* Expanded size to fit larger icons */
+  max-height: 400px;
 }
 
 .atom {
-  width: 100px; /* Larger icons */
-  height: 100px;
+  width: 120px;
+  height: 120px;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .atom img {
@@ -48,35 +45,28 @@ body {
 }
 
 .playbox-atom {
-  width: 80px; /* Adjusted size for playbox atoms */
+  width: 80px;
   height: 80px;
+  position: absolute;
 }
 
 #playbox {
-  width: 500px;
-  height: 500px;
+  width: 600px;
+  height: 600px;
   border: 2px dashed #aaa;
   position: relative;
-  background-color: #ffffff;
-  overflow: hidden;
+  background-color: #fff;
 }
 
 #bonds {
   position: absolute;
   width: 100%;
   height: 100%;
-  pointer-events: none; /* Bonds do not interfere with interaction */
-}
-
-#playbox p {
-  color: #666;
-  font-style: italic;
+  pointer-events: none;
 }
 
 #molecule-name {
   margin-top: 20px;
   font-size: 24px;
-  font-weight: bold;
-  color: #333;
   text-align: center;
 }
