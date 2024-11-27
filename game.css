@@ -65,4 +65,8 @@ body {
   max-width: 150px;
   max-height: 150px;
   cursor: move;
+  position: absolute; /* So it can be positioned in the playbox */
+  left: 50%; /* Start from the center of the playbox */
+  top: 50%;
+  transform: translate(-50%, -50%); /* Center the image */
 }
