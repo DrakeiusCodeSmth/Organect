@@ -2,19 +2,21 @@ const expandButton = document.getElementById("expand-button");
 const atomContainer = document.getElementById("atom-container");
 const playbox = document.getElementById("playbox");
 const bonds = document.getElementById("bonds");
-const moleculeNameDisplay = document.getElementById("molecule-name");
 
 expandButton.addEventListener("click", () => {
   atomContainer.classList.toggle("expanded");
 });
 
 let draggedAtom = null;
+let isMoleculeDragging = false;
 
 document.querySelectorAll(".atom").forEach(atom => {
   atom.addEventListener("mousedown", startDrag);
 });
 
 function startDrag(event) {
+  if (isMoleculeDragging) return; // Prevent dragging atoms if molecule dragging is in progress
+
   event.preventDefault();
   const target = event.target.closest(".atom");
   draggedAtom = target.cloneNode(true);
@@ -59,7 +61,6 @@ function isInsidePlaybox(x, y) {
 function enablePlayboxDragging(atom) {
   atom.onmousedown = function(event) {
     event.preventDefault();
-
     const moveWithinPlaybox = (pageX, pageY) => {
       const rect = playbox.getBoundingClientRect();
       const newX = Math.min(Math.max(pageX - rect.left - atom.offsetWidth / 2, 0), rect.width - atom.offsetWidth);
@@ -87,36 +88,76 @@ function checkBonding() {
   });
 
   if (atomCounts.carbon === 1 && atomCounts.hydrogen === 4) {
-    displayBond("Methane (CH₄)", atoms);
+    createMolecule("Methane (CH₄)", atoms, "cross");
   } else if (atomCounts.oxygen === 1 && atomCounts.hydrogen === 2) {
-    displayBond("Water (H₂O)", atoms);
+    createMolecule("Water (H₂O)", atoms, "linear");
   } else if (atomCounts.carbon === 2 && atomCounts.hydrogen === 6) {
-    displayBond("Ethane (C₂H₆)", atoms);
-  } else {
-    moleculeNameDisplay.textContent = "";
-    bonds.innerHTML = ""; // Clear bonds
+    createMolecule("Ethane (C₂H₆)", atoms, "linear");
   }
 }
 
-function displayBond(name, atoms) {
-  moleculeNameDisplay.textContent = name;
+function createMolecule(name, atoms, layout) {
+  // Clear atoms from playbox
+  atoms.forEach(atom => atom.remove());
+
+  // Create molecule container
+  const molecule = document.createElement("div");
+  molecule.classList.add("molecule");
+  playbox.appendChild(molecule);
+
+  // Position molecule
+  molecule.style.left = "50%";
+  molecule.style.top = "50%";
+  molecule.style.transform = "translate(-50%, -50%)";
+
+  // Add atoms in the specified layout
+  const positions = getMoleculePositions(layout, atoms.length);
+  positions.forEach((pos, i) => {
+    const atom = atoms[i];
+    atom.style.position = "absolute";
+    atom.style.left = `${pos.x}px`;
+    atom.style.top = `${pos.y}px`;
+    molecule.appendChild(atom);
+  });
+
+  // Add bond lines
   bonds.innerHTML = ""; // Clear previous bonds
-
-  const positions = atoms.map(atom => ({
-    x: atom.offsetLeft + atom.offsetWidth / 2,
-    y: atom.offsetTop + atom.offsetHeight / 2,
-  }));
-
-  for (let i = 0; i < positions.length - 1; i++) {
+  for (let i = 0; i < positions.length; i++) {
     for (let j = i + 1; j < positions.length; j++) {
-      const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-      line.setAttribute("x1", positions[i].x);
-      line.setAttribute("y1", positions[i].y);
-      line.setAttribute("x2", positions[j].x);
-      line.setAttribute("y2", positions[j].y);
-      line.setAttribute("stroke", "black");
-      line.setAttribute("stroke-width", "2");
+      const line = createBondLine(positions[i], positions[j]);
       bonds.appendChild(line);
     }
   }
+
+  // Display molecule name
+  const nameLabel = document.createElement("div");
+  nameLabel.classList.add("bond-name");
+  nameLabel.textContent = name;
+  molecule.appendChild(nameLabel);
+
+  // Make molecule draggable
+  enablePlayboxDragging(molecule);
+}
+
+function getMoleculePositions(layout, count) {
+  const center = { x: 100, y: 100 };
+  const positions = [];
+  if (layout === "cross") {
+    positions.push(center);
+    positions.push({ x: center.x - 80, y: center.y }); // Left
+    positions.push({ x: center.x + 80, y: center.y }); // Right
+    positions.push({ x: center.x, y: center.y - 80 }); // Top
+    positions.push({ x: center.x, y: center.y + 80 }); // Bottom
+  }
+  return positions.slice(0, count);
+}
+
+function createBondLine(start, end) {
+  const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+  line.setAttribute("x1", start.x);
+  line.setAttribute("y1", start.y);
+  line.setAttribute("x2", end.x);
+  line.setAttribute("y2", end.y);
+  line.classList.add("bond-line");
+  return line;
 }
