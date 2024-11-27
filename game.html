@@ -1,31 +1,28 @@
-<!DOCTYPE html> 
-<html lang="en"> 
-<head> 
-  <meta charset="UTF-8"> 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-  <title>Chemistry Bonding Game</title> 
-  <link rel="stylesheet" href="game.css"> 
-</head> 
-<body> 
-  <!-- Inventory Bar --> 
-  <div id="inventory"> 
-    <button id="expand-button">Inventory</button> 
-    <div id="atom-container" class="collapsed"> 
-      <div class="atom" id="carbon"><img src="images/carbon.png" alt="Carbon"></div> 
-      <div class="atom" id="hydrogen"><img src="images/hydrogen.png" alt="Hydrogen"></div> 
-      <div class="atom" id="oxygen"><img src="images/oxygen.png" alt="Oxygen"></div> 
-    </div> 
-  </div> 
- 
-  <!-- Playbox --> 
-  <div id="playbox"> 
-    <p>Drag atoms here to form molecules.</p> 
-    <svg id="bonds"></svg> 
-  </div> 
- 
-  <!-- Display Bonded Molecule Name --> 
-  <div id="molecule-name"></div> 
- 
-  <script src="game.js"></script> 
-</body> 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chemistry Bonding Game</title>
+  <link rel="stylesheet" href="./game.css">
+</head>
+<body>
+  <!-- Inventory -->
+  <div id="inventory">
+    <button id="expand-button">Inventory</button>
+    <div id="atom-container" class="collapsed">
+      <div class="atom" id="carbon"><img src="./images/carbon.png" alt="Carbon"></div>
+      <div class="atom" id="hydrogen"><img src="./images/hydrogen.png" alt="Hydrogen"></div>
+      <div class="atom" id="oxygen"><img src="./images/oxygen.png" alt="Oxygen"></div>
+    </div>
+  </div>
+
+  <!-- Playbox -->
+  <div id="playbox">
+    <p>Drag atoms here to form molecules.</p>
+    <svg id="bonds"></svg>
+  </div>
+
+  <script src="./game.js"></script>
+</body>
 </html>
