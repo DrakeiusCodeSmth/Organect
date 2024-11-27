@@ -114,12 +114,47 @@ document.addEventListener("DOMContentLoaded", () => {
     // Remove existing atoms
     playbox.querySelectorAll(".playbox-atom").forEach(atom => atom.remove());
 
-    // Add bonding image
+    // Add bonding image (with transparent background)
     const bondImage = document.createElement("img");
     bondImage.src = `./images/${imageSrc}`;
     bondImage.classList.add("bonding-image");
     playbox.appendChild(bondImage);
 
-    enableDragging(bondImage); // Make bonding image draggable
+    enableBondDragging(bondImage); // Make bonding image draggable
+  }
+
+  function enableBondDragging(bondImage) {
+    bondImage.onmousedown = function (event) {
+      const shiftX = event.clientX - bondImage.getBoundingClientRect().left;
+      const shiftY = event.clientY - bondImage.getBoundingClientRect().top;
+
+      const moveElement = (event) => {
+        const rect = playbox.getBoundingClientRect();
+
+        // Constrain element to playbox boundaries
+        const newX = Math.min(
+          Math.max(event.clientX - rect.left - shiftX, 0),
+          rect.width - bondImage.offsetWidth
+        );
+        const newY = Math.min(
+          Math.max(event.clientY - rect.top - shiftY, 0),
+          rect.height - bondImage.offsetHeight
+        );
+
+        bondImage.style.left = `${newX}px`;
+        bondImage.style.top = `${newY}px`;
+      };
+
+      document.addEventListener("mousemove", moveElement);
+
+      bondImage.onmouseup = function () {
+        document.removeEventListener("mousemove", moveElement);
+        bondImage.onmouseup = null;
+      };
+    };
+
+    bondImage.ondragstart = function () {
+      return false; // Disable default browser dragging behavior
+    };
   }
 });
