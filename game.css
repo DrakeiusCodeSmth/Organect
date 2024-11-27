@@ -60,37 +60,9 @@ body {
   background-color: white;
 }
 
-/* Molecule and Bond Styling */
-#bonds {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
-.playbox-atom {
-  position: absolute;
+/* Bonding Image Styling */
+.bonding-image {
+  max-width: 150px;
+  max-height: 150px;
   cursor: move;
-}
-
-.molecule {
-  position: absolute;
-  cursor: move;
-}
-
-.bond-line {
-  stroke: grey;
-  stroke-width: 2;
-}
-
-.bond-name {
-  position: absolute;
-  font-size: 16px;
-  font-weight: bold;
-  text-align: center;
-  background: white;
-  border: 1px solid #aaa;
-  padding: 5px;
-  transform: translate(-50%, -50%);
-  top: -25px;
 }
