@@ -11,14 +11,23 @@
   <div id="inventory">
     <button id="expand-button">Inventory</button>
     <div id="atom-container" class="collapsed">
-      <div class="atom" id="carbon">
+      <!-- Atom images -->
+      <div class="atom" id="carbon" draggable="true">
         <img src="./images/carbon.png" alt="Carbon">
       </div>
-      <div class="atom" id="hydrogen">
+      <div class="atom" id="hydrogen" draggable="true">
         <img src="./images/hydrogen.png" alt="Hydrogen">
       </div>
-      <div class="atom" id="oxygen">
+      <div class="atom" id="oxygen" draggable="true">
         <img src="./images/oxygen.png" alt="Oxygen">
+      </div>
+
+      <!-- Bond images (hidden by default) -->
+      <div id="ch4bond" class="bond" style="display:none;">
+        <img src="data:image/png;base64,...base64encodedimage..." alt="CH4 Bond" />
+      </div>
+      <div id="h2obond" class="bond" style="display:none;">
+        <img src="data:image/png;base64,...base64encodedimage..." alt="H2O Bond" />
       </div>
     </div>
   </div>
@@ -32,3 +41,4 @@
   <script src="./game.js"></script>
 </body>
 </html>
+
