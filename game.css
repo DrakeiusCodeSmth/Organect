@@ -1,122 +1,96 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const expandButton = document.getElementById("expand-button");
-  const atomContainer = document.getElementById("atom-container");
-  const playbox = document.getElementById("playbox");
+/* General Body Styling */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background-color: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
 
-  let draggedAtom = null;
+/* Inventory Styling */
+#inventory {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
 
-  // Expand/collapse inventory
-  expandButton.addEventListener("click", () => {
-    atomContainer.classList.toggle("expanded");
-  });
+#expand-button {
+  padding: 10px;
+  cursor: pointer;
+}
 
-  // Add drag behavior to inventory atoms
-  document.querySelectorAll(".atom").forEach(atom => {
-    atom.addEventListener("mousedown", startDragFromInventory);
-  });
+#atom-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease;
+}
 
-  function startDragFromInventory(event) {
-    const target = event.target.closest(".atom");
-    draggedAtom = target.cloneNode(true);
-    draggedAtom.classList.add("playbox-atom");
-    document.body.appendChild(draggedAtom);
+#atom-container.expanded {
+  max-height: 300px;
+}
 
-    moveAt(event.pageX, event.pageY);
+/* Atom Styling */
+.atom {
+  width: 80px;
+  height: 80px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%; /* Retain circular shape */
+}
 
-    const onMouseMove = (event) => moveAt(event.pageX, event.pageY);
-    document.addEventListener("mousemove", onMouseMove);
+.atom img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
 
-    draggedAtom.onmouseup = function (event) {
-      if (isInsidePlaybox(event.pageX, event.pageY)) {
-        // Add atom to playbox
-        playbox.appendChild(draggedAtom);
-        draggedAtom.style.left = `${event.pageX - playbox.offsetLeft - draggedAtom.offsetWidth / 2}px`;
-        draggedAtom.style.top = `${event.pageY - playbox.offsetTop - draggedAtom.offsetHeight / 2}px`;
-        enableDraggingWithinPlaybox(draggedAtom);
-      } else {
-        // Remove atom if dropped outside playbox
-        draggedAtom.remove();
-      }
-      cleanup();
-    };
+/* Playbox Styling */
+#playbox {
+  position: relative;
+  width: 600px;
+  height: 600px;
+  border: 2px dashed #aaa;
+  background-color: white;
+}
 
-    function cleanup() {
-      document.removeEventListener("mousemove", onMouseMove);
-      draggedAtom.onmouseup = null;
-      draggedAtom = null;
-    }
-  }
+/* Molecule and Bond Styling */
+#bonds {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
 
-  function moveAt(pageX, pageY) {
-    draggedAtom.style.position = "absolute";
-    draggedAtom.style.left = `${pageX - draggedAtom.offsetWidth / 2}px`;
-    draggedAtom.style.top = `${pageY - draggedAtom.offsetHeight / 2}px`;
-  }
+.playbox-atom {
+  position: absolute;
+  cursor: move;
+}
 
-  function isInsidePlaybox(x, y) {
-    const rect = playbox.getBoundingClientRect();
-    return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
-  }
+.molecule {
+  position: absolute;
+  cursor: move;
+}
 
-  // Enable dragging for atoms already in playbox
-  function enableDraggingWithinPlaybox(atom) {
-    atom.onmousedown = function (event) {
-      const shiftX = event.clientX - atom.getBoundingClientRect().left;
-      const shiftY = event.clientY - atom.getBoundingClientRect().top;
+.bond-line {
+  stroke: grey;
+  stroke-width: 2;
+}
 
-      const moveAtom = (event) => {
-        const rect = playbox.getBoundingClientRect();
-
-        // Constrain atom to playbox boundaries
-        const newX = Math.min(
-          Math.max(event.clientX - rect.left - shiftX, 0),
-          rect.width - atom.offsetWidth
-        );
-        const newY = Math.min(
-          Math.max(event.clientY - rect.top - shiftY, 0),
-          rect.height - atom.offsetHeight
-        );
-
-        atom.style.left = `${newX}px`;
-        atom.style.top = `${newY}px`;
-      };
-
-      document.addEventListener("mousemove", moveAtom);
-
-      atom.onmouseup = function () {
-        document.removeEventListener("mousemove", moveAtom);
-        atom.onmouseup = null;
-      };
-    };
-  }
-
-  function checkBonding() {
-    const atoms = Array.from(playbox.querySelectorAll(".playbox-atom"));
-    const atomCounts = { carbon: 0, hydrogen: 0, oxygen: 0 };
-
-    atoms.forEach(atom => {
-      atomCounts[atom.id]++;
-    });
-
-    if (atomCounts.carbon === 1 && atomCounts.hydrogen === 4) {
-      createMolecule("Methane (CH₄)", atoms, "cross");
-    } else if (atomCounts.oxygen === 1 && atomCounts.hydrogen === 2) {
-      createMolecule("Water (H₂O)", atoms, "bent");
-    }
-  }
-
-  function createMolecule(name, atoms, layout) {
-    atoms.forEach(atom => atom.remove());
-
-    const molecule = document.createElement("div");
-    molecule.classList.add("molecule");
-    playbox.appendChild(molecule);
-
-    const nameTag = document.createElement("div");
-    nameTag.classList.add("bond-name");
-    nameTag.textContent = name;
-    molecule.appendChild(nameTag);
-
-    enableDraggingWithinPlaybox(molecule);
-  }
-});
+.bond-name {
+  position: absolute;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  background: white;
+  border: 1px solid #aaa;
+  padding: 5px;
+  transform: translate(-50%, -50%);
+  top: -25px;
+}
