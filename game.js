@@ -4,21 +4,18 @@ document.addEventListener("DOMContentLoaded", () => {
   const playbox = document.getElementById("playbox");
   const bonds = document.getElementById("bonds");
 
+  // Toggle inventory
   expandButton.addEventListener("click", () => {
     atomContainer.classList.toggle("expanded");
   });
 
   let draggedAtom = null;
-  let isDraggingMolecule = false;
 
   document.querySelectorAll(".atom").forEach(atom => {
     atom.addEventListener("mousedown", startDrag);
   });
 
   function startDrag(event) {
-    if (isDraggingMolecule) return; // Skip dragging atoms if molecule dragging is active
-    event.preventDefault();
-
     const target = event.target.closest(".atom");
     draggedAtom = target.cloneNode(true);
     draggedAtom.classList.add("playbox-atom");
@@ -27,7 +24,6 @@ document.addEventListener("DOMContentLoaded", () => {
     moveAt(event.pageX, event.pageY);
 
     function moveAt(pageX, pageY) {
-      draggedAtom.style.position = "absolute";
       draggedAtom.style.left = `${pageX - draggedAtom.offsetWidth / 2}px`;
       draggedAtom.style.top = `${pageY - draggedAtom.offsetHeight / 2}px`;
     }
@@ -41,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
         draggedAtom.style.position = "absolute";
         draggedAtom.style.left = `${event.pageX - playbox.offsetLeft - draggedAtom.offsetWidth / 2}px`;
         draggedAtom.style.top = `${event.pageY - playbox.offsetTop - draggedAtom.offsetHeight / 2}px`;
-        enableDraggingWithinPlaybox(draggedAtom);
+        enablePlayboxDragging(draggedAtom);
         checkBonding();
       } else {
         draggedAtom.remove();
@@ -61,23 +57,23 @@ document.addEventListener("DOMContentLoaded", () => {
     return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
   }
 
-  function enableDraggingWithinPlaybox(atom) {
-    atom.onmousedown = function(event) {
-      event.preventDefault();
+  function enablePlayboxDragging(atom) {
+    atom.onmousedown = function (event) {
+      const shiftX = event.clientX - atom.getBoundingClientRect().left;
+      const shiftY = event.clientY - atom.getBoundingClientRect().top;
 
-      const moveWithinPlaybox = (pageX, pageY) => {
+      const moveAtom = (event) => {
         const rect = playbox.getBoundingClientRect();
-        const newX = Math.min(Math.max(pageX - rect.left - atom.offsetWidth / 2, 0), rect.width - atom.offsetWidth);
-        const newY = Math.min(Math.max(pageY - rect.top - atom.offsetHeight / 2, 0), rect.height - atom.offsetHeight);
+        const newX = Math.min(Math.max(event.clientX - rect.left - shiftX, 0), rect.width - atom.offsetWidth);
+        const newY = Math.min(Math.max(event.clientY - rect.top - shiftY, 0), rect.height - atom.offsetHeight);
         atom.style.left = `${newX}px`;
         atom.style.top = `${newY}px`;
       };
 
-      const onMouseMove = (event) => moveWithinPlaybox(event.pageX, event.pageY);
-      document.addEventListener("mousemove", onMouseMove);
+      document.addEventListener("mousemove", moveAtom);
 
       atom.onmouseup = function () {
-        document.removeEventListener("mousemove", onMouseMove);
+        document.removeEventListener("mousemove", moveAtom);
         atom.onmouseup = null;
       };
     };
@@ -93,8 +89,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (atomCounts.carbon === 1 && atomCounts.hydrogen === 4) {
       createMolecule("Methane (CH₄)", atoms, "cross");
-    } else if (atomCounts.oxygen === 1 && atomCounts.hydrogen === 2) {
-      createMolecule("Water (H₂O)", atoms, "bent");
     }
   }
 
@@ -105,32 +99,11 @@ document.addEventListener("DOMContentLoaded", () => {
     molecule.classList.add("molecule");
     playbox.appendChild(molecule);
 
-    const positions = getMoleculePositions(layout);
-    positions.forEach((pos, index) => {
-      const atom = atoms[index];
-      atom.style.position = "absolute";
-      atom.style.left = `${pos.x}px`;
-      atom.style.top = `${pos.y}px`;
-      molecule.appendChild(atom);
-    });
-
     const nameTag = document.createElement("div");
     nameTag.classList.add("bond-name");
     nameTag.textContent = name;
     molecule.appendChild(nameTag);
 
-    enableDraggingWithinPlaybox(molecule);
+    enablePlayboxDragging(molecule);
   }
-
-  function getMoleculePositions(layout) {
-    const center = { x: 200, y: 200 };
-    if (layout === "cross") {
-      return [
-        center,
-        { x: center.x - 100, y: center.y },
-        { x: center.x + 100, y: center.y },
-        { x: center.x, y: center.y - 100 },
-        { x: center.x, y: center.y + 100 }
-      ];
-    } else if (layout === "bent") {
-      return [
+});
