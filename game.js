@@ -16,7 +16,6 @@ document.querySelectorAll(".atom").forEach(atom => {
 
 function startDrag(event) {
   event.preventDefault();
-
   const target = event.target.closest(".atom");
   draggedAtom = target.cloneNode(true);
   draggedAtom.classList.add("playbox-atom");
@@ -25,20 +24,16 @@ function startDrag(event) {
   moveAt(event.pageX, event.pageY);
 
   function moveAt(pageX, pageY) {
-    draggedAtom.style.position = "absolute";
-    draggedAtom.style.zIndex = "1000";
-    draggedAtom.style.left = pageX - draggedAtom.offsetWidth / 2 + "px";
-    draggedAtom.style.top = pageY - draggedAtom.offsetHeight / 2 + "px";
+    draggedAtom.style.left = `${pageX - draggedAtom.offsetWidth / 2}px`;
+    draggedAtom.style.top = `${pageY - draggedAtom.offsetHeight / 2}px`;
   }
 
   const onMouseMove = (event) => moveAt(event.pageX, event.pageY);
-
   document.addEventListener("mousemove", onMouseMove);
 
   draggedAtom.onmouseup = function (event) {
     if (isInsidePlaybox(event.pageX, event.pageY)) {
       playbox.appendChild(draggedAtom);
-      draggedAtom.style.position = "absolute";
       draggedAtom.style.left = `${event.pageX - playbox.offsetLeft - draggedAtom.offsetWidth / 2}px`;
       draggedAtom.style.top = `${event.pageY - playbox.offsetTop - draggedAtom.offsetHeight / 2}px`;
       enablePlayboxDragging(draggedAtom);
@@ -74,10 +69,9 @@ function enablePlayboxDragging(atom) {
     };
 
     const onMouseMove = (event) => moveWithinPlaybox(event.pageX, event.pageY);
-
     document.addEventListener("mousemove", onMouseMove);
 
-    atom.onmouseup = function() {
+    atom.onmouseup = function () {
       document.removeEventListener("mousemove", onMouseMove);
       atom.onmouseup = null;
     };
@@ -93,12 +87,36 @@ function checkBonding() {
   });
 
   if (atomCounts.carbon === 1 && atomCounts.hydrogen === 4) {
-    moleculeNameDisplay.textContent = "Methane (CH₄)";
+    displayBond("Methane (CH₄)", atoms);
   } else if (atomCounts.oxygen === 1 && atomCounts.hydrogen === 2) {
-    moleculeNameDisplay.textContent = "Water (H₂O)";
-  } else if (atomCounts.carbon === 1 && atomCounts.oxygen === 2) {
-    moleculeNameDisplay.textContent = "Carbon Dioxide (CO₂)";
+    displayBond("Water (H₂O)", atoms);
+  } else if (atomCounts.carbon === 2 && atomCounts.hydrogen === 6) {
+    displayBond("Ethane (C₂H₆)", atoms);
   } else {
     moleculeNameDisplay.textContent = "";
+    bonds.innerHTML = ""; // Clear bonds
+  }
+}
+
+function displayBond(name, atoms) {
+  moleculeNameDisplay.textContent = name;
+  bonds.innerHTML = ""; // Clear previous bonds
+
+  const positions = atoms.map(atom => ({
+    x: atom.offsetLeft + atom.offsetWidth / 2,
+    y: atom.offsetTop + atom.offsetHeight / 2,
+  }));
+
+  for (let i = 0; i < positions.length - 1; i++) {
+    for (let j = i + 1; j < positions.length; j++) {
+      const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      line.setAttribute("x1", positions[i].x);
+      line.setAttribute("y1", positions[i].y);
+      line.setAttribute("x2", positions[j].x);
+      line.setAttribute("y2", positions[j].y);
+      line.setAttribute("stroke", "black");
+      line.setAttribute("stroke-width", "2");
+      bonds.appendChild(line);
+    }
   }
 }
