@@ -29,12 +29,12 @@ body {
 }
 
 #atom-container.expanded {
-  max-height: 400px;
+  max-height: 300px;
 }
 
 .atom {
-  width: 120px;
-  height: 120px;
+  width: 100px;
+  height: 100px;
   cursor: pointer;
 }
 
@@ -44,18 +44,13 @@ body {
   object-fit: contain;
 }
 
-.playbox-atom {
-  width: 80px;
-  height: 80px;
-  position: absolute;
-}
-
 #playbox {
   width: 600px;
   height: 600px;
   border: 2px dashed #aaa;
   position: relative;
-  background-color: #fff;
+  background-color: white;
+  overflow: hidden;
 }
 
 #bonds {
@@ -65,8 +60,25 @@ body {
   pointer-events: none;
 }
 
-#molecule-name {
-  margin-top: 20px;
-  font-size: 24px;
+.bond-name {
+  position: absolute;
+  font-size: 16px;
+  font-weight: bold;
   text-align: center;
+  background: white;
+  border: 1px solid #aaa;
+  padding: 3px 5px;
+  border-radius: 3px;
+  transform: translate(-50%, -50%);
+  top: -20px;
+}
+
+.bond-line {
+  stroke: grey;
+  stroke-width: 2;
+}
+
+.molecule {
+  position: absolute;
+  cursor: move;
 }
