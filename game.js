@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const playbox = document.getElementById("playbox");
 
   let draggedAtom = null;
-  let draggedBond = null;
+  let draggedBond = null;  // Added for bond dragging behavior
 
   // Expand/collapse inventory
   expandButton.addEventListener("click", () => {
@@ -14,6 +14,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // Add drag behavior to inventory atoms
   document.querySelectorAll(".atom").forEach(atom => {
     atom.addEventListener("mousedown", startDragFromInventory);
+  });
+
+  // Add drag behavior for bonds if any
+  document.querySelectorAll(".bond").forEach(bond => {
+    bond.addEventListener("mousedown", startDragFromBond);
   });
 
   function startDragFromInventory(event) {
@@ -29,14 +34,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     draggedAtom.onmouseup = function (event) {
       if (isInsidePlaybox(event.pageX, event.pageY)) {
-        // Add atom to playbox
         playbox.appendChild(draggedAtom);
         draggedAtom.style.left = `${event.pageX - playbox.offsetLeft - draggedAtom.offsetWidth / 2}px`;
         draggedAtom.style.top = `${event.pageY - playbox.offsetTop - draggedAtom.offsetHeight / 2}px`;
-        enableDragging(draggedAtom); // Make atom draggable
+        enableDragging(draggedAtom);  // Make atom draggable
         checkBonding();
       } else {
-        // Remove atom if dropped outside playbox
         draggedAtom.remove();
       }
       cleanup();
@@ -49,10 +52,47 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  function startDragFromBond(event) {
+    const target = event.target.closest(".bond");
+    draggedBond = target.cloneNode(true);
+    draggedBond.classList.add("playbox-bond");
+    document.body.appendChild(draggedBond);
+
+    moveAt(event.pageX, event.pageY);
+
+    const onMouseMove = (event) => moveAt(event.pageX, event.pageY);
+    document.addEventListener("mousemove", onMouseMove);
+
+    draggedBond.onmouseup = function (event) {
+      if (isInsidePlaybox(event.pageX, event.pageY)) {
+        playbox.appendChild(draggedBond);
+        draggedBond.style.left = `${event.pageX - playbox.offsetLeft - draggedBond.offsetWidth / 2}px`;
+        draggedBond.style.top = `${event.pageY - playbox.offsetTop - draggedBond.offsetHeight / 2}px`;
+        enableDragging(draggedBond); // Make bond draggable
+        checkBonding();
+      } else {
+        draggedBond.remove();
+      }
+      cleanup();
+    };
+
+    function cleanup() {
+      document.removeEventListener("mousemove", onMouseMove);
+      draggedBond.onmouseup = null;
+      draggedBond = null;
+    }
+  }
+
   function moveAt(pageX, pageY) {
     draggedAtom.style.position = "absolute";
     draggedAtom.style.left = `${pageX - draggedAtom.offsetWidth / 2}px`;
     draggedAtom.style.top = `${pageY - draggedAtom.offsetHeight / 2}px`;
+
+    if (draggedBond) {
+      draggedBond.style.position = "absolute";
+      draggedBond.style.left = `${pageX - draggedBond.offsetWidth / 2}px`;
+      draggedBond.style.top = `${pageY - draggedBond.offsetHeight / 2}px`;
+    }
   }
 
   function isInsidePlaybox(x, y) {
@@ -91,7 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     element.ondragstart = function () {
-      return false; // Disable default browser dragging behavior
+      return false;
     };
   }
 
@@ -111,50 +151,22 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function createBondingImage(imageSrc) {
-    // Remove existing atoms
     playbox.querySelectorAll(".playbox-atom").forEach(atom => atom.remove());
 
-    // Add bonding image (with transparent background)
     const bondImage = document.createElement("img");
     bondImage.src = `./images/${imageSrc}`;
     bondImage.classList.add("bonding-image");
+
+    // Ensure the background is transparent by setting the style
+    bondImage.style.background = "transparent";
     playbox.appendChild(bondImage);
 
-    enableBondDragging(bondImage); // Make bonding image draggable
-  }
+    // Center bonding image in playbox
+    bondImage.style.position = "absolute";
+    bondImage.style.left = "50%";
+    bondImage.style.top = "50%";
+    bondImage.style.transform = "translate(-50%, -50%)";
 
-  function enableBondDragging(bondImage) {
-    bondImage.onmousedown = function (event) {
-      const shiftX = event.clientX - bondImage.getBoundingClientRect().left;
-      const shiftY = event.clientY - bondImage.getBoundingClientRect().top;
-
-      const moveElement = (event) => {
-        const rect = playbox.getBoundingClientRect();
-
-        // Constrain element to playbox boundaries
-        const newX = Math.min(
-          Math.max(event.clientX - rect.left - shiftX, 0),
-          rect.width - bondImage.offsetWidth
-        );
-        const newY = Math.min(
-          Math.max(event.clientY - rect.top - shiftY, 0),
-          rect.height - bondImage.offsetHeight
-        );
-
-        bondImage.style.left = `${newX}px`;
-        bondImage.style.top = `${newY}px`;
-      };
-
-      document.addEventListener("mousemove", moveElement);
-
-      bondImage.onmouseup = function () {
-        document.removeEventListener("mousemove", moveElement);
-        bondImage.onmouseup = null;
-      };
-    };
-
-    bondImage.ondragstart = function () {
-      return false; // Disable default browser dragging behavior
-    };
+    enableDragging(bondImage);
   }
 });
