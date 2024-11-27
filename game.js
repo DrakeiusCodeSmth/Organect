@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const playbox = document.getElementById("playbox");
 
   let draggedAtom = null;
+  let draggedBond = null;
 
   // Expand/collapse inventory
   expandButton.addEventListener("click", () => {
@@ -118,12 +119,6 @@ document.addEventListener("DOMContentLoaded", () => {
     bondImage.src = `./images/${imageSrc}`;
     bondImage.classList.add("bonding-image");
     playbox.appendChild(bondImage);
-
-    // Center bonding image in playbox
-    bondImage.style.position = "absolute";
-    bondImage.style.left = "50%";
-    bondImage.style.top = "50%";
-    bondImage.style.transform = "translate(-50%, -50%)";
 
     enableDragging(bondImage); // Make bonding image draggable
   }
