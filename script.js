@@ -12,8 +12,6 @@ function showContent(section) {
         contentArea.innerHTML = "<h2>Welcome to the Main Menu</h2><p>This is the main menu. Click any of the buttons above to navigate.</p>";
     } else if (section === 'faq') {
         contentArea.innerHTML = "<h2>FAQ</h2><p>This is the FAQ section content. Here you will find answers to common questions.</p>";
-    } else if (section === 'tutorial') {
-        contentArea.innerHTML = "<h2>Tutorial</h2><p>This is the tutorial section content. Follow the steps to learn how to play the Chemis Game.</p>";
     } else if (section === 'devs') {
         contentArea.innerHTML = "<h2>Devs</h2><p>This is the devs section content. Meet the team behind the Chemis Game.</p>";
     }
