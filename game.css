@@ -7,62 +7,60 @@
 
 /* Full-screen background */
 body {
-  position: relative;
-  height: 100vh;
+  position: relative; /* Needed for positioning */
+  height: 100vh;  /* Ensure the body takes up the full viewport height */
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
+  align-items: center;  /* Center everything horizontally */
+  justify-content: center;  /* Center everything vertically */
   font-family: Arial, sans-serif;
   color: white;
-  overflow: hidden;
+  overflow: hidden; /* Prevent extra scrolling */
 }
 
 /* Background image */
 body::before {
-  content: "";
+  content: ""; /* Create an empty pseudo-element */
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: url('https://wallpaperaccess.com/full/1373773.jpg');
-  background-size: cover;
+  background-image: url('https://wallpaperaccess.com/full/1373773.jpg');  /* Replace with your image URL */
+  background-size: cover; /* Makes the background cover the whole screen */
   background-position: center;
-  background-repeat: no-repeat;
-  z-index: 0;
+  background-repeat: no-repeat;  /* Prevent the image from repeating */
+  z-index: 0; /* Ensure the background is behind everything */
 }
 
 /* Dark overlay to darken the background image */
 body::after {
-  content: "";
+  content: ""; /* Create an empty pseudo-element for the overlay */
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.8);
-  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent black overlay */
+  z-index: 1; /* Ensure the overlay is above the background image but below the content */
 }
 
-/* Menu bar styling */
-.button-bar {
-  width: 100%;
-  background-color: rgba(0, 123, 255, 1);
-  padding: 20px;
+/* Tutorial container centered */
+.tutorial-container {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-  z-index: 1000;
+  width: 70%;
+  z-index: 2; /* Ensure it's above the dark overlay */
+  position: relative;
+  margin-top: 0;
 }
 
-/* Enlarged and centered button */
+/* Button styles */
 .tutorial-button {
-  padding: 20px 40px;
-  font-size: 18px;
+  padding: 10px 20px;
+  font-size: 16px;
   background-color: #4CAF50;
   color: white;
   border: none;
@@ -70,25 +68,11 @@ body::after {
   transition: background-color 0.3s ease;
 }
 
-/* Hover effect for tutorial button */
 .tutorial-button:hover {
   background-color: #45a049;
 }
 
-/* Tutorial container centered */
-.tutorial-container {
-  width: 70%;
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-top: 100px;
-  text-align: center; /* Ensures content is centered */
-}
-
-/* Sequence styling */
+/* Sequence Styling */
 .sequence {
   display: flex;
   flex-direction: column;
@@ -114,12 +98,9 @@ body::after {
 
 .buttons {
   margin-top: 20px;
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  max-width: 400px;
 }
 
+/* Button Styles */
 button {
   padding: 10px 20px;
   margin: 5px;
@@ -142,17 +123,30 @@ button {
   color: white;
 }
 
-/* Image layout for third sequence */
+/* Image layout for the third sequence */
 .images {
   display: flex;
   justify-content: space-around;
 }
 
 .atom-image {
-  width: 100px;
+  width: 100px; /* Adjust image size */
   height: 100px;
   object-fit: cover;
   margin: 10px;
+}
+
+/* Add custom colors for each atom */
+#hydrogen {
+  background-color: #ffeb3b;
+}
+
+#carbon {
+  background-color: #4caf50;
+}
+
+#oxygen {
+  background-color: #2196f3;
 }
 
 /* Hide Previous Button on First Sequence */
