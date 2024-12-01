@@ -14,20 +14,24 @@
     </div>
 
     <div class="tutorial-content" id="tutorialContent">
+      <!-- First Sequence: Pengertian -->
       <div class="sequence" id="sequence1">
         <div class="content">
-          <div class="image"><img src="pengertian_image.jpg" alt="Image"></div>
+          <div class="image">
+            <img src="pengertian_image.jpg" alt="Image">
+          </div>
           <div class="text">
             <p>Kimia Organik merupakan Kimia organik merupakan ilmu yang mempelajari tentang benda hidup yang meliputi penyusun dari makhluk hidup dan strukturnya. Awalnya, cabang ilmu kimia hanya terbatas dengan senyawa yang diproduksi oleh makhluk hidup, namun kini kimia organik meluas hingga mencakup zat-zat buatan.</p>
             <p>Ilmu kimia organik memiliki peran yang cukup besar pada industri obat-obatan, makanan, petrokimia, pewarna, kosmetik, bahan peledak dan lainnya.</p>
           </div>
         </div>
         <div class="buttons">
-          <button class="prev-button" id="prevButton1" onclick="showPrev(1)">Previous</button>
+          <button class="prev-button" id="prevButton1" style="display: none;" onclick="showPrev(1)">Previous</button>
           <button class="next-button" id="nextButton1" onclick="showNext(1)">Next</button>
         </div>
       </div>
-      <!-- Add the other sequences (Sifat, Pembentuk) similarly -->
+      
+      <!-- Second Sequence: Sifat -->
       <div class="sequence" id="sequence2" style="display: none;">
         <div class="content">
           <p>Reaktivitas Tergantung pada Gugus Fungsi...</p>
@@ -45,20 +49,16 @@
           <button class="next-button" id="nextButton2" onclick="showNext(2)">Next</button>
         </div>
       </div>
- <div class="sequence" id="sequence3" style="display: none;">
-  <div class="content">
-    <div class="images">
-      <img src="hydrogen.png" alt="Hydrogen" class="atom-image">
-      <img src="carbon.png" alt="Carbon" class="atom-image">
-      <img src="oxygen.png" alt="Oxygen" class="atom-image">
-    </div>
-  </div>
-  <div class="buttons">
-    <button class="prev-button" id="prevButton3" onclick="showPrev(3)">Previous</button>
-    <button class="finish-button" id="finishButton" onclick="finishTutorial()">Finish</button>
-  </div>
-</div>
 
+      <!-- Third Sequence: Pembentuk Kimia Organik -->
+      <div class="sequence" id="sequence3" style="display: none;">
+        <div class="content">
+          <div class="images">
+            <img src="hydrogen_image.jpg" alt="Hydrogen" class="atom-image">
+            <img src="carbon_image.jpg" alt="Carbon" class="atom-image">
+            <img src="oxygen_image.jpg" alt="Oxygen" class="atom-image">
+          </div>
+        </div>
         <div class="buttons">
           <button class="prev-button" id="prevButton3" onclick="showPrev(3)">Previous</button>
           <button class="finish-button" id="finishButton" onclick="finishTutorial()">Finish</button>
@@ -67,6 +67,6 @@
     </div>
   </div>
 
-  <script src="game.js"></script>
+  <script src="scripts.js"></script>
 </body>
 </html>
