@@ -3,42 +3,70 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chemistry Bonding Game</title>
-  <link rel="stylesheet" href="./game.css">
+  <title>Organic Chemistry Tutorial</title>
+  <link rel="stylesheet" href="game.css">
 </head>
 <body>
-  <!-- Inventory -->
-  <div id="inventory">
-    <button id="expand-button">Inventory</button>
-    <div id="atom-container" class="collapsed">
-      <!-- Atom images -->
-      <div class="atom" id="carbon" draggable="true">
-        <img src="./images/carbon.png" alt="Carbon">
-      </div>
-      <div class="atom" id="hydrogen" draggable="true">
-        <img src="./images/hydrogen.png" alt="Hydrogen">
-      </div>
-      <div class="atom" id="oxygen" draggable="true">
-        <img src="./images/oxygen.png" alt="Oxygen">
-      </div>
+  <div class="tutorial-container">
+    <div class="button-bar" id="bab1Button">
+      <button class="tutorial-button" id="bab1">Bab 1: Kimia Organik</button>
+      <span class="status" id="bab1Status"></span>
+    </div>
 
-      <!-- Bond images (hidden by default) -->
-      <div id="ch4bond" class="bond" style="display:none;">
-        <img src="./images/ch4bond.png" alt="CH4 Bond" />
+    <div class="tutorial-content" id="tutorialContent">
+      <div class="sequence" id="sequence1">
+        <div class="content">
+          <div class="image"><img src="pengertian_image.jpg" alt="Image"></div>
+          <div class="text">
+            <p>Kimia Organik merupakan Kimia organik merupakan ilmu yang mempelajari tentang benda hidup yang meliputi penyusun dari makhluk hidup dan strukturnya. Awalnya, cabang ilmu kimia hanya terbatas dengan senyawa yang diproduksi oleh makhluk hidup, namun kini kimia organik meluas hingga mencakup zat-zat buatan.</p>
+            <p>Ilmu kimia organik memiliki peran yang cukup besar pada industri obat-obatan, makanan, petrokimia, pewarna, kosmetik, bahan peledak dan lainnya.</p>
+          </div>
+        </div>
+        <div class="buttons">
+          <button class="prev-button" id="prevButton1" onclick="showPrev(1)">Previous</button>
+          <button class="next-button" id="nextButton1" onclick="showNext(1)">Next</button>
+        </div>
       </div>
-      <div id="h2obond" class="bond" style="display:none;">
-        <img src="./images/h2obond.png" alt="H2O Bond" />
+      <!-- Add the other sequences (Sifat, Pembentuk) similarly -->
+      <div class="sequence" id="sequence2" style="display: none;">
+        <div class="content">
+          <p>Reaktivitas Tergantung pada Gugus Fungsi...</p>
+          <ul>
+            <li>Reaktivitas Tergantung pada Gugus Fungsi</li>
+            <li>Pembakaran</li>
+            <li>Isomerisme</li>
+            <li>Reaksi Substitusi</li>
+            <li>Reaksi Penambahan</li>
+            <li>Reaksi Polimerisasi</li>
+          </ul>
+        </div>
+        <div class="buttons">
+          <button class="prev-button" id="prevButton2" onclick="showPrev(2)">Previous</button>
+          <button class="next-button" id="nextButton2" onclick="showNext(2)">Next</button>
+        </div>
+      </div>
+      <div class="sequence" id="sequence3" style="display: none;">
+        <div class="content">
+          <div class="atoms">
+            <div class="atom" id="hydrogen">
+              <p>Hydrogen (H)</p>
+            </div>
+            <div class="atom" id="carbon">
+              <p>Carbon (C)</p>
+            </div>
+            <div class="atom" id="oxygen">
+              <p>Oxygen (O)</p>
+            </div>
+          </div>
+        </div>
+        <div class="buttons">
+          <button class="prev-button" id="prevButton3" onclick="showPrev(3)">Previous</button>
+          <button class="finish-button" id="finishButton" onclick="finishTutorial()">Finish</button>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Playbox -->
-  <div id="playbox">
-    <p>Drag atoms here to form molecules.</p>
-    <svg id="bonds"></svg>
-  </div>
-
-  <script src="./game.js"></script>
+  <script src="game.js"></script>
 </body>
 </html>
-
