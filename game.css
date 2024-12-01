@@ -135,3 +135,111 @@ body::after {
   padding: 10px 20px;
   font-size: 16px;
   background
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.tutorial-button:hover {
+  background-color: #45a049;
+}
+
+/* Content area for tutorial */
+.tutorial-content {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+/* Sequence Styling */
+.sequence {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image img {
+  width: 200px;
+  height: 200px;
+}
+
+.text {
+  margin-left: 20px;
+  text-align: left;
+  font-size: 16px;
+}
+
+.buttons {
+  margin-top: 20px;
+}
+
+/* Button Styles */
+button {
+  padding: 10px 20px;
+  margin: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.prev-button {
+  background-color: #f44336;
+  color: white;
+}
+
+.next-button {
+  background-color: #008CBA;
+  color: white;
+}
+
+.finish-button {
+  background-color: #4CAF50;
+  color: white;
+}
+
+/* Image layout for the third sequence */
+.images {
+  display: flex;
+  justify-content: space-around;
+}
+
+.atom-image {
+  width: 100px; /* Adjust image size */
+  height: 100px;
+  object-fit: cover;
+  margin: 10px;
+}
+
+/* Add custom colors for each atom */
+#hydrogen {
+  background-color: #ffeb3b;
+}
+
+#carbon {
+  background-color: #4caf50;
+}
+
+#oxygen {
+  background-color: #2196f3;
+}
+
+/* Hide Previous Button on First Sequence */
+#prevButton1 {
+  display: none;
+}
+
+/* Active Button Style */
+.active {
+  background-color: #555;
+}
+
