@@ -82,14 +82,17 @@ button {
   color: white;
 }
 
-.atom {
-  display: inline-block;
+/* New CSS for sequence 3 (images layout) */
+.images {
+  display: flex;
+  justify-content: space-around;
+}
+
+.atom-image {
+  width: 100px;  /* Adjust image size as needed */
+  height: 100px;
+  object-fit: cover;
   margin: 10px;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 5px;
-  text-align: center;
-  width: 100px;
 }
 
 #hydrogen {
