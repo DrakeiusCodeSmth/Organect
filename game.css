@@ -1,108 +1,137 @@
-body {
-  font-family: Arial, sans-serif;
+/* Reset margins and paddings */
+* {
   margin: 0;
   padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #f4f4f4;
+  box-sizing: border-box;
 }
 
+/* Full-screen background */
+body {
+  position: relative; /* Needed for positioning */
+  height: 100vh;  /* Ensure the body takes up the full viewport height */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  font-family: Arial, sans-serif;
+  color: white;
+  overflow: hidden; /* Prevent extra scrolling */
+}
+
+/* Background image */
+body::before {
+  content: ""; /* Create an empty pseudo-element */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('https://wallpaperaccess.com/full/1373773.jpg');  /* Replace with your image URL */
+  background-size: cover; /* Makes the background cover the whole screen */
+  background-position: center;
+  background-repeat: no-repeat;  /* Prevent the image from repeating */
+  z-index: 0; /* Ensure the background is behind everything */
+}
+
+/* Dark overlay to darken the background image */
+body::after {
+  content: ""; /* Create an empty pseudo-element for the overlay */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent black overlay */
+  z-index: 1; /* Ensure the overlay is above the background image but below the content */
+}
+
+/* Menu bar styling */
+.menu-bar {
+  width: 100%;
+  background-color: rgba(0, 123, 255, 1); /* Slightly transparent menu bar */
+  padding: 10px;
+  display: flex;
+  justify-content: flex-start;
+  position: fixed;
+  top: 0;
+  left: 0;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Shadow effect for 3D appearance */
+  z-index: 1000; /* Ensure the menu bar is above other elements */
+}
+
+/* Menu button styling */
+.menu-button {
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-size: 16px;
+  margin-right: 15px;
+  cursor: pointer;
+  padding: 10px 20px;
+  font-family: 'Montserrat', sans-serif; /* Applies Montserrat font */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Text shadow for depth */
+  transition: background-color 0.3s, transform 0.2s; /* Smooth transitions */
+}
+
+.menu-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+  transform: translateY(-2px); /* Lift effect on hover */
+}
+
+/* Content area styling */
+.content-area {
+  margin-top: 60px; /* Offset for the menu bar */
+  padding: 20px;
+  text-align: center;
+  max-width: 600px;
+  width: 100%;
+  position: relative; /* Required for z-index */
+  z-index: 2; /* Ensure content is above the overlay */
+}
+
+/* THIS IS THE LOGO SECTION FOR HOME BAR */
+.home-image {
+  width: 500px;  /* Increase the width for a bigger image */
+  margin-top: 50px;  /* Adjust spacing above the image */
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* BUTTON SECTION*/
+/* Play Button Styling */
+.play-button {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 400px; /* Large width for the button */
+  height: 150px; /* Large height for the button */
+  background: url('images/play-button.png') no-repeat center center;
+  background-size: cover; /* Ensures the image covers the entire button */
+  cursor: pointer;
+  border: none;
+  position: relative; /* Allows you to adjust its position */
+  top: -100px; /* Moves the button upwards */
+  transition: all 0.3s ease; /* Smooth transition for all changes */
+}
+
+/* Hover Effect for Play Button */
+.play-button:hover {
+  transform: scale(1.1); /* Slightly increase the size */
+  background: url('images/play-button-hover.png') no-repeat center center; /* Change the image */
+  background-size: cover; /* Ensures the new image covers the entire button */
+  opacity: 0.9; /* Darken the button */
+}
+
+/* Tutorial Canvas Styling */
 .tutorial-container {
   width: 70%;
-}
-
-.button-bar {
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
+  position: relative;
+  z-index: 2; /* Ensure it's above the dark overlay */
 }
 
 .tutorial-button {
   padding: 10px 20px;
   font-size: 16px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.tutorial-button:hover {
-  background-color: #45a049;
-}
-
-.status {
-  margin-left: 10px;
-  font-weight: bold;
-}
-
-.tutorial-content .sequence {
-  display: flex;
-  flex-direction: column;
-}
-
-.content {
-  display: flex;
-}
-
-.image img {
-  width: 200px;
-  height: 200px;
-}
-
-.text {
-  margin-left: 20px;
-}
-
-.buttons {
-  margin-top: 20px;
-}
-
-button {
-  padding: 10px 20px;
-  margin: 5px;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.prev-button {
-  background-color: #f44336;
-  color: white;
-}
-
-.next-button {
-  background-color: #008CBA;
-  color: white;
-}
-
-.finish-button {
-  background-color: #4CAF50;
-  color: white;
-}
-
-/* New CSS for sequence 3 (images layout) */
-.images {
-  display: flex;
-  justify-content: space-around;
-}
-
-.atom-image {
-  width: 100px;  /* Adjust image size as needed */
-  height: 100px;
-  object-fit: cover;
-  margin: 10px;
-}
-
-#hydrogen {
-  background-color: #ffeb3b;
-}
-
-#carbon {
-  background-color: #4caf50;
-}
-
-#oxygen {
-  background-color: #2196f3;
-}
+  background
